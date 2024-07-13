@@ -59,22 +59,22 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             ;;
-	8)
-	    echo "Configuring Budgie..."
-        mkdir ~/.themes
-	    cp ~/koenos-archlinux/themes/* ~/.themes
-        gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-        gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-        gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
-        gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
-	    ;;
-	9)
-	    echo "Configuring i3wm"
-	    mkdir ~/.config
-        cp ~/koenos-archlinux/dotconfig-i3 ~/.config
-        mkdir ~/.themes
-	    cp ~/koenos-archlinux/themes/* ~/.themes
-    *)
+	    8)
+	        echo "Configuring Budgie..."
+            mkdir ~/.themes
+	        cp ~/koenos-archlinux/themes/* ~/.themes
+            gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+            gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+            gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
+            gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
+	        ;;
+	    9)
+	        echo "Configuring i3wm"
+	        mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3 ~/.config
+            mkdir ~/.themes
+	        cp ~/koenos-archlinux/themes/* ~/.themes
+        *)
             echo "Invalid option"
             ;;
     esac
