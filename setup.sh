@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Install AUR Helper (yay)
-  pacman -S git
-  git clone https://aur.archlinux.org/yay.git
-  cd yay.git
-  makepkg -si
-
 # Function to configure the chosen desktop environment
 configure_desktop_environment() {
     case $1 in
