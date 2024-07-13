@@ -74,6 +74,7 @@ configure_desktop_environment() {
             cp ~/koenos-archlinux/dotconfig-i3 ~/.config
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
+            ;;
         *)
             echo "Invalid option"
             ;;
