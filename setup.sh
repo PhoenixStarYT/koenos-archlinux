@@ -71,9 +71,9 @@ configure_desktop_environment() {
 	    9)
 	        echo "Configuring i3wm"
 	        mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3 ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3 ~/.config -r
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+	        cp ~/koenos-archlinux/themes/* ~/.themes -r
             ;;
         *)
             echo "Invalid option"
