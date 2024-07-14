@@ -12,7 +12,7 @@ echo "
 ██╗  ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗ ███████╗
 ██║ ██╔╝██╔═══██╗██╔════╝████╗  ██║██╔═══██╗██╔════╝
 █████╔╝ ██║   ██║█████╗  ██╔██╗ ██║██║   ██║███████╗
-██╔═██╗ ██║   ██║██╔══╝  ██║╚██╗██║██║   ██║╚════██║
+██╔═██╗ ██║   ██║██╔═��╝  ██║╚██╗██║██║   ██║╚════██║
 ██║  ██╗╚██████╔╝███████╗██║ ╚████║╚██████╔╝███████║
 ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
                                                     
@@ -287,132 +287,7 @@ install_desktop_environment() {
     esac
 }
 
-# Desktop Environments
-PS3='Please enter your choice: '
-options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "Window Managers" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "GNOME")
-            install_desktop_environment 1
-            break
-            ;;
-        "KDE Plasma")
-            install_desktop_environment 2
-            break
-            ;;
-        "XFCE")
-            install_desktop_environment 3
-            break
-            ;;
-        "Cinnamon")
-            install_desktop_environment 4
-            break
-            ;;
-        "MATE")
-            install_desktop_environment 5
-            break
-            ;;
-        "LXDE")
-            install_desktop_environment 6
-            break
-            ;;
-        "LXQt")
-            install_desktop_environment 7
-            break
-            ;;
-        "Budgie")
-	    install_desktop_environment 8
-	    break
-	    ;;
-	"Window Managers")
-	    install_desktop_environment 9
-	    break
-	    ;;
-        "Quit")
-            break
-            ;;
-        *) echo "Invalid option $REPLY";;
-    esac
-
-# Function to install Steam
-install_steam() {
-    sudo pacman -S steam
-}
-
-# Function to install Lutris
-install_lutris() {
-    sudo pacman -S lutris
-}
-
-# Function to install Wine
-install_wine() {
-    sudo pacman -S wine winetricks
-}
-
-# Function to install Libretro (RetroArch)
-install_libretro() {
-    sudo pacman -S libretro
-}
-
-# Prompt user to install gaming-related software
-read -p "Do you want to install gaming-related software? (y/n): " answer
-if [[ $answer =~ ^[Yy]$ ]]; then
-    # Show options and install selected software
-    PS3="Select an option (enter the number): "
-    options=("Steam" "Lutris" "Wine" "Libretro" "All" "None")
-    select opt in "${options[@]}"; do
-        case $opt in
-            "Steam")
-                install_steam
-                ;;
-            "Lutris")
-                install_lutris
-                ;;
-            "Wine")
-                install_wine
-                ;;
-            "Libretro")
-                install_libretro
-                ;;
-            "All")
-                install_steam
-                install_lutris
-                install_wine
-                install_libretro
-                ;;
-            "None")
-                echo "Skipping installation."
-                ;;
-            *)
-                echo "Invalid option. Please select again."
-                ;;
-        esac
-        break
-    done
-else
-    echo "Skipping installation of gaming-related software."
-fi
-
-echo "Installation complete."
-
-# Function to detect available AUR helper
-detect_aur_helper() {
-    if command -v yay &>/dev/null; then
-        AUR_HELPER="yay"
-    elif command -v paru &>/dev/null; then
-        AUR_HELPER="paru"
-    elif command -v trizen &>/dev/null; then
-        AUR_HELPER="trizen"
-    elif command -v yay-bin &>/dev/null; then
-        AUR_HELPER="yay-bin"
-    else
-        echo "Error: No supported AUR helper found. Please install yay, paru, trizen, or yay-bin."
-        exit 1
-    fi
-}
-
-# Function to install office suite
+# Function to install the chosen office suite
 install_office_suite() {
     clear
     echo "Choose an office suite to install:"
@@ -456,9 +331,126 @@ install_office_suite() {
     esac
 }
 
+# Function to install gaming-related software
+install_gaming_software() {
+    read -p "Do you want to install gaming-related software? (y/n): " answer
+    if [[ $answer =~ ^[Yy]$ ]]; then
+        PS3="Select an option (enter the number): "
+        options=("Steam" "Lutris" "Wine" "Libretro" "All" "None")
+        select opt in "${options[@]}"; do
+            case $opt in
+                "Steam")
+                    install_steam
+                    break
+                    ;;
+                "Lutris")
+                    install_lutris
+                    break
+                    ;;
+                "Wine")
+                    install_wine
+                    break
+                    ;;
+                "Libretro")
+                    install_libretro
+                    break
+                    ;;
+                "All")
+                    install_steam
+                    install_lutris
+                    install_wine
+                    install_libretro
+                    break
+                    ;;
+                "None")
+                    echo "Skipping installation."
+                    break
+                    ;;
+                *)
+                    echo "Invalid option. Please select again."
+                    ;;
+            esac
+        done
+    else
+        echo "Skipping installation of gaming-related software."
+    fi
+}
+
 # Main script starts here
 detect_aur_helper
+
+# Choose and install the desktop environment
+PS3='Please enter your choice: '
+options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "Window Managers" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "GNOME")
+            install_desktop_environment 1
+            break
+            ;;
+        "KDE Plasma")
+            install_desktop_environment 2
+            break
+            ;;
+        "XFCE")
+            install_desktop_environment 3
+            break
+            ;;
+        "Cinnamon")
+            install_desktop_environment 4
+            break
+            ;;
+        "MATE")
+            install_desktop_environment 5
+            break
+            ;;
+        "LXDE")
+            install_desktop_environment 6
+            break
+            ;;
+        "LXQt")
+            install_desktop_environment 7
+            break
+            ;;
+        "Budgie")
+            install_desktop_environment 8
+            break
+            ;;
+        "Window Managers")
+            install_desktop_environment 9
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "Invalid option $REPLY";;
+    esac
+done
+
+# Install office suite
 install_office_suite
+
+# Install gaming-related software
+install_gaming_software
+
+echo "Installation complete."
+
+# Function to detect available AUR helper
+detect_aur_helper() {
+    if command -v yay &>/dev/null; then
+        AUR_HELPER="yay"
+    elif command -v paru &>/dev/null; then
+        AUR_HELPER="paru"
+    elif command -v trizen &>/dev/null; then
+        AUR_HELPER="trizen"
+    elif command -v yay-bin &>/dev/null; then
+        AUR_HELPER="yay-bin"
+    else
+        echo "Error: No supported AUR helper found. Please install yay, paru, trizen, or yay-bin."
+        exit 1
+    fi
+}
 
 # Function to install additional packages (Add more that you would like to have on your system)
 install_additional_packages() {
@@ -489,15 +481,13 @@ git clone https://github.com/PhoenixStarYT/KoenOS-Themes
 cp ~/KoenOS-Themes/Widgets ~/.themes -r
 cp ~/KoenOS-Themes/Icons ~/.icons -r
 
-done
-
 echo "Desktop installed"
 echo "
 
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
 ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
-╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║
+╚════██║  ╚██╔╝  ��════██║   ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
 ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
                                                      
