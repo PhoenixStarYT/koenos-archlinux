@@ -56,7 +56,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
 	    ;;
         2)
             echo "Configuring KDE Plasma..."
@@ -68,7 +68,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r 
             ;;
         3)
             echo "Configuring XFCE..."
@@ -80,7 +80,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             ;;
         4)
             echo "Configuring Cinnamon..."
@@ -92,7 +92,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             ;;
         5)
             echo "Configuring MATE..."
@@ -104,7 +104,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             ;;
         6)
             echo "Configuring LXDE..."
@@ -116,7 +116,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             ;;
         7)
             echo "Configuring LXQt..."
@@ -128,7 +128,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             ;;
 	8)
 	        echo "Configuring Budgie..."
@@ -141,7 +141,7 @@ configure_desktop_environment() {
             gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
 	        ;;
 	    9)
 	        echo "Configuring i3wm"
@@ -152,7 +152,7 @@ configure_desktop_environment() {
             mkdir ~/.wallpaper
 	        git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             ;;
         *)
             echo "Invalid option"
