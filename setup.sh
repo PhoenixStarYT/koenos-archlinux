@@ -476,28 +476,6 @@ detect_aur_helper() {
     fi
 }
 
-# Function to install additional packages (Add more that you would like to have on your system)
-install_additional_packages() {
-    echo "Installing additional packages..."
-
-    # Install fastfetch
-    sudo pacman -S --noconfirm fastfetch
-
-    # Install ranger
-    sudo pacman -S --noconfirm ranger
-
-    # Install htop
-    sudo pacman -S --noconfirm htop
-
-    # Install cmatrix
-    sudo pacman -S --noconfirm cmatrix
-
-    echo "Additional packages installed."
-}
-
-# Call the function to install additional packages
-install_additional_packages
-
 # Install themes
 mkdir ~/.themes
 mkdir ~/.icons
@@ -505,7 +483,61 @@ git clone https://github.com/PhoenixStarYT/KoenOS-Themes ~
 cp ~/KoenOS-Themes/Widgets ~/.themes -r
 cp ~/KoenOS-Themes/Icons ~/.icons -r
 
-echo "Desktop installed"
+# Function to install Starship prompt
+install_starship() {
+    echo "Installing Starship prompt..."
+    sudo pacman -S --noconfirm starship
+
+    # Add Starship initialization to .bashrc
+    if ! grep -q 'eval "$(starship init bash)"' ~/.bashrc; then
+        echo 'eval "$(starship init bash)"' >> ~/.bashrc
+    fi
+
+    echo "Starship prompt installed and configured."
+}
+
+# Call the function to install Starship prompt
+install_starship
+
+# Function to install development tools
+install_development_tools() {
+    echo "Installing development tools..."
+    sudo pacman -S --noconfirm git vim code docker nodejs npm python python-pip
+}
+
+# Function to install utilities
+install_utilities() {
+    echo "Installing utilities..."
+    sudo pacman -S --noconfirm fastfetch htop tmux curl wget zsh ranger
+    # Install oh-my-zsh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+}
+
+# Function to install media tools
+install_media_tools() {
+    echo "Installing media tools..."
+    sudo pacman -S --noconfirm vlc gimp inkscape audacity
+}
+
+# Function to install productivity tools
+install_productivity_tools() {
+    echo "Installing productivity tools..."
+    sudo pacman -S --noconfirm thunderbird keepassxc syncthing
+}
+
+# Function to install networking tools
+install_networking_tools() {
+    echo "Installing networking tools..."
+    sudo pacman -S --noconfirm openvpn networkmanager
+}
+
+# Call the functions to install additional tools
+install_development_tools
+install_utilities
+install_media_tools
+install_productivity_tools
+install_networking_tools
+
 echo "
 
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
@@ -529,3 +561,4 @@ GREEN="\e[32m"
 RESET="\e[0m"
 
 echo -e "${GREEN}Reboot your system to see the final results${RESET}"
+
