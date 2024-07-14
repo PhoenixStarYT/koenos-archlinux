@@ -502,8 +502,8 @@ install_additional_packages
 mkdir ~/.themes
 mkdir ~/.icons
 git clone https://github.com/PhoenixStarYT/KoenOS-Themes ~
-cp ~/KoenOS-Themes/themes ~/.themes -r
-cp ~/KoenOS-Themes/icons ~/.icons -r
+cp ~/KoenOS-Themes/Widgets ~/.themes -r
+cp ~/KoenOS-Themes/Icons ~/.icons -r
 
 echo "Desktop installed"
 echo "
