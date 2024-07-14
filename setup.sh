@@ -54,7 +54,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
 	    ;;
         2)
             echo "Configuring KDE Plasma..."
@@ -64,7 +64,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             ;;
         3)
             echo "Configuring XFCE..."
@@ -74,7 +74,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             ;;
         4)
             echo "Configuring Cinnamon..."
@@ -84,7 +84,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             ;;
         5)
             echo "Configuring MATE..."
@@ -94,7 +94,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             ;;
         6)
             echo "Configuring LXDE..."
@@ -104,7 +104,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             ;;
         7)
             echo "Configuring LXQt..."
@@ -114,14 +114,14 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             ;;
 	8)
 	        echo "Configuring Budgie..."
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
             gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
@@ -135,7 +135,7 @@ configure_desktop_environment() {
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpaper ~/.wallpaper
+	        git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             ;;
         *)
             echo "Invalid option"
