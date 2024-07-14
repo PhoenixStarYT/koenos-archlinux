@@ -1,5 +1,23 @@
 #!/bin/bash
 
+echo "
+
+██████╗ ███████╗██╗   ██╗████████╗                  
+██╔══██╗██╔════╝╚██╗ ██╔╝╚══██╔══╝                  
+██████╔╝███████╗ ╚████╔╝    ██║                     
+██╔═══╝ ╚════██║  ╚██╔╝     ██║                     
+██║     ███████║   ██║      ██║                     
+╚═╝     ╚══════╝   ╚═╝      ╚═╝                     
+                                                    
+██╗  ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗ ███████╗
+██║ ██╔╝██╔═══██╗██╔════╝████╗  ██║██╔═══██╗██╔════╝
+█████╔╝ ██║   ██║█████╗  ██╔██╗ ██║██║   ██║███████╗
+██╔═██╗ ██║   ██║██╔══╝  ██║╚██╗██║██║   ██║╚════██║
+██║  ██╗╚██████╔╝███████╗██║ ╚████║╚██████╔╝███████║
+╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+                                                    
+
+"
 # Install AUR Helper
 
 # Define the list of AUR helpers
@@ -57,6 +75,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
 	    ;;
         2)
             echo "Configuring KDE Plasma..."
@@ -69,6 +88,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r 
+            systemctl enable sddm
             ;;
         3)
             echo "Configuring XFCE..."
@@ -81,6 +101,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
             ;;
         4)
             echo "Configuring Cinnamon..."
@@ -93,6 +114,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
             ;;
         5)
             echo "Configuring MATE..."
@@ -105,6 +127,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
             ;;
         6)
             echo "Configuring LXDE..."
@@ -117,6 +140,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
             ;;
         7)
             echo "Configuring LXQt..."
@@ -129,6 +153,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
             ;;
 	8)
 	        echo "Configuring Budgie..."
@@ -142,6 +167,7 @@ configure_desktop_environment() {
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
 	        ;;
 	    9)
 	        echo "Configuring i3wm"
@@ -153,6 +179,7 @@ configure_desktop_environment() {
 	        git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            systemctl enable sddm
             ;;
         *)
             echo "Invalid option"
@@ -211,47 +238,47 @@ install_desktop_environment() {
     case $1 in
         1)
             echo "Installing GNOME..."
-            sudo pacman -S gnome gnome-extra firefox variety breeze kitty
+            sudo pacman -S gnome gnome-extra firefox variety breeze kitty sddm
             configure_desktop_environment 1
             ;;
         2)
             echo "Installing KDE Plasma..."
-            sudo pacman -S plasma kde-applications firefox variety breeze kitty
+            sudo pacman -S plasma kde-applications firefox variety breeze kitty sddm
             configure_desktop_environment 2
             ;;
         3)
             echo "Installing XFCE..."
-            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty
+            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty sddm
             configure_desktop_environment 3
             ;;
         4)
             echo "Installing Cinnamon..."
-            sudo pacman -S cinnamon firefox variety breeze kitty 
+            sudo pacman -S cinnamon firefox variety breeze kitty sddm
             configure_desktop_environment 4
             ;;
         5)
             echo "Installing MATE..."
-            sudo pacman -S mate mate-extra firefox variety breeze kitty
+            sudo pacman -S mate mate-extra firefox variety breeze kitty sddm
             configure_desktop_environment 5
             ;;
         6)
             echo "Installing LXDE..."
-            sudo pacman -S lxde firefox variety breeze kitty
+            sudo pacman -S lxde firefox variety breeze kitty sddm
             configure_desktop_environment 6
             ;;
         7)
             echo "Installing LXQt..."
-            sudo pacman -S lxqt firefox variety breeze kitty
+            sudo pacman -S lxqt firefox variety breeze kitty sddm
             configure_desktop_environment 7
             ;;
 	8)
 	    echo "Installing Budgie"
-	    sudo pacman -S budgie firefox variety breeze kitty
+	    sudo pacman -S budgie firefox variety breeze kitty sddm
 	    configure_desktop_environment 8
 	    ;;
 	9)
-	    echo "Installing i3wm"
-	    sudo pacman -S vim unzip picom bspwm awesome openbox polybar lxsession lxpanel lightdm rofi kitty terminator thunar flameshot neofetch sxhkd git lxpolkit lxappearance xorg firefox-esr pulseaudio pavucontrol tar papirus-icon-theme nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome libqt5svg5 qml-module-qtquick-controls qml-module-qtquick-controls2 variety
+	    echo "Installing Window Managers"
+	    sudo pacman -S vim unzip picom bspwm i3 awesome openbox polybar lxsession lxpanel sddm rofi kitty terminator thunar flameshot fastfetch sxhkd git lxpolkit lxappearance xorg firefox pulseaudio pavucontrol tar papirus-icon-theme nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome libqt5svg5 qml-module-qtquick-controls qml-module-qtquick-controls2 variety
 	    configure_desktop_environment 9
 	    ;;
         *)
@@ -260,7 +287,7 @@ install_desktop_environment() {
     esac
 }
 
-# Menu options
+# Desktop Environments
 PS3='Please enter your choice: '
 options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "Window Managers" "Quit")
 select opt in "${options[@]}"
@@ -307,7 +334,184 @@ do
             ;;
         *) echo "Invalid option $REPLY";;
     esac
+
+# Function to install Steam
+install_steam() {
+    sudo pacman -S steam
+}
+
+# Function to install Lutris
+install_lutris() {
+    sudo pacman -S lutris
+}
+
+# Function to install Wine
+install_wine() {
+    sudo pacman -S wine winetricks
+}
+
+# Function to install Libretro (RetroArch)
+install_libretro() {
+    sudo pacman -S libretro
+}
+
+# Prompt user to install gaming-related software
+read -p "Do you want to install gaming-related software? (y/n): " answer
+if [[ $answer =~ ^[Yy]$ ]]; then
+    # Show options and install selected software
+    PS3="Select an option (enter the number): "
+    options=("Steam" "Lutris" "Wine" "Libretro" "All" "None")
+    select opt in "${options[@]}"; do
+        case $opt in
+            "Steam")
+                install_steam
+                ;;
+            "Lutris")
+                install_lutris
+                ;;
+            "Wine")
+                install_wine
+                ;;
+            "Libretro")
+                install_libretro
+                ;;
+            "All")
+                install_steam
+                install_lutris
+                install_wine
+                install_libretro
+                ;;
+            "None")
+                echo "Skipping installation."
+                ;;
+            *)
+                echo "Invalid option. Please select again."
+                ;;
+        esac
+        break
+    done
+else
+    echo "Skipping installation of gaming-related software."
+fi
+
+echo "Installation complete."
+
+# Function to detect available AUR helper
+detect_aur_helper() {
+    if command -v yay &>/dev/null; then
+        AUR_HELPER="yay"
+    elif command -v paru &>/dev/null; then
+        AUR_HELPER="paru"
+    elif command -v trizen &>/dev/null; then
+        AUR_HELPER="trizen"
+    elif command -v yay-bin &>/dev/null; then
+        AUR_HELPER="yay-bin"
+    else
+        echo "Error: No supported AUR helper found. Please install yay, paru, trizen, or yay-bin."
+        exit 1
+    fi
+}
+
+# Function to install office suite
+install_office_suite() {
+    clear
+    echo "Choose an office suite to install:"
+    echo "1. LibreOffice"
+    echo "2. OnlyOffice"
+    echo "3. WPS Office"
+    echo "4. Calligra Suite"
+    echo "5. SoftMaker Office"
+    echo "6. Skip installation"
+
+    read -p "Enter your choice [1-6]: " choice
+
+    case $choice in
+        1)
+            echo "Installing LibreOffice..."
+            sudo pacman -S --noconfirm libreoffice-fresh
+            ;;
+        2)
+            echo "Installing OnlyOffice..."
+            $AUR_HELPER -S --noconfirm onlyoffice-desktopeditors-bin
+            ;;
+        3)
+            echo "Installing WPS Office..."
+            $AUR_HELPER -S --noconfirm wps-office
+            ;;
+        4)
+            echo "Installing Calligra Suite..."
+            sudo pacman -S --noconfirm calligra
+            ;;
+        5)
+            echo "Installing SoftMaker Office..."
+            $AUR_HELPER -S --noconfirm softmaker-office
+            ;;
+        6)
+            echo "Skipping office suite installation."
+            ;;
+        *)
+            echo "Invalid choice. Please enter a number from 1 to 6."
+            install_office_suite
+            ;;
+    esac
+}
+
+# Main script starts here
+detect_aur_helper
+install_office_suite
+
+# Function to install additional packages (Add more that you would like to have on your system)
+install_additional_packages() {
+    echo "Installing additional packages..."
+
+    # Install fastfetch
+    sudo pacman -S --noconfirm fastfetch
+
+    # Install ranger
+    sudo pacman -S --noconfirm ranger
+
+    # Install htop
+    sudo pacman -S --noconfirm htop
+
+    # Install cmatrix
+    sudo pacman -S --noconfirm cmatrix
+
+    echo "Additional packages installed."
+}
+
+# Call the function to install additional packages
+install_additional_packages
+
+# Install themes
+mkdir ~/.themes
+mkdir ~/.icons
+git clone https://github.com/PhoenixStarYT/KoenOS-Themes
+cp ~/KoenOS-Themes/Widgets ~/.themes -r
+cp ~/KoenOS-Themes/Icons ~/.icons -r
+
 done
 
 echo "Desktop installed"
+echo "
 
+███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
+██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
+███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
+╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║
+███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
+╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
+                                                     
+██████╗ ███████╗ █████╗ ██████╗ ██╗   ██╗            
+██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝            
+██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝             
+██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝              
+██║  ██║███████╗██║  ██║██████╔╝   ██║               
+╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝               
+                                                     
+
+"
+
+GREEN="\e[32m"
+RESET="\e[0m"
+
+echo -e "${GREEN}Reboot your system to see the final results${RESET}"
