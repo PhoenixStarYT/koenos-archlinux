@@ -331,6 +331,30 @@ install_office_suite() {
     esac
 }
 
+# Function to install Steam
+install_steam() {
+    echo "Installing Steam..."
+    sudo pacman -S --noconfirm steam
+}
+
+# Function to install Lutris
+install_lutris() {
+    echo "Installing Lutris..."
+    sudo pacman -S --noconfirm lutris
+}
+
+# Function to install Wine
+install_wine() {
+    echo "Installing Wine..."
+    sudo pacman -S --noconfirm wine
+}
+
+# Function to install Libretro
+install_libretro() {
+    echo "Installing Libretro..."
+    sudo pacman -S --noconfirm libretro
+}
+
 # Function to install gaming-related software
 install_gaming_software() {
     read -p "Do you want to install gaming-related software? (y/n): " answer
@@ -487,7 +511,7 @@ echo "
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
 ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
-╚════██║  ╚██╔╝  ��════██║   ██║   ██╔══╝  ██║╚██╔╝██║
+╚════██║  ╚██╔╝  ════██║   ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
 ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
                                                      
