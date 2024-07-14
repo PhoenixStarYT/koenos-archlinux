@@ -55,6 +55,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
 	    ;;
         2)
             echo "Configuring KDE Plasma..."
@@ -65,6 +67,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
         3)
             echo "Configuring XFCE..."
@@ -75,6 +79,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
         4)
             echo "Configuring Cinnamon..."
@@ -85,6 +91,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
         5)
             echo "Configuring MATE..."
@@ -95,6 +103,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
         6)
             echo "Configuring LXDE..."
@@ -105,6 +115,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
         7)
             echo "Configuring LXQt..."
@@ -115,6 +127,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
 	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
 	8)
 	        echo "Configuring Budgie..."
@@ -126,7 +140,8 @@ configure_desktop_environment() {
             gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
             gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
-
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
 	        ;;
 	    9)
 	        echo "Configuring i3wm"
@@ -136,6 +151,8 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
 	        git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
+            mkdir ~/.config
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config
             ;;
         *)
             echo "Invalid option"
@@ -143,47 +160,93 @@ configure_desktop_environment() {
     esac
 }
 
+# Function to configure kitty as the default terminal
+configure_kitty_as_default() {
+    echo "Setting kitty as the default terminal emulator..."
+    
+    # For GNOME-based environments
+    if command -v gsettings &> /dev/null; then
+        gsettings set org.gnome.desktop.default-applications.terminal exec 'kitty'
+        gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-e'
+    fi
+
+    # For KDE-based environments
+    if command -v update-alternatives &> /dev/null; then
+        sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
+        sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
+    fi
+
+    # For XFCE
+    if command -v xfconf-query &> /dev/null; then
+        xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -s kitty -a
+        xfconf-query -c xfce4-session -p /sessions/Failsafe/Client1_Command -t string -s "--login"
+    fi
+
+    # For other environments (LXDE, LXQt, etc.)
+    if [ -f ~/.config/lxsession/LXDE/autostart ]; then
+        echo "@kitty" >> ~/.config/lxsession/LXDE/autostart
+    fi
+
+    # For i3
+    if [ -d ~/.config/i3 ]; then
+        echo 'bindsym $mod+Return exec kitty' >> ~/.config/i3/config
+    fi
+
+    # For bspwm
+    if [ -d ~/.config/bspwm ]; then
+        echo 'super + Return
+	kitty' >> ~/.config/sxhkd/sxhkdrc
+    fi
+
+    # For Openbox
+    if [ -d ~/.config/openbox ]; then
+        if [ ! -f ~/.config/openbox/autostart ]; then
+            touch ~/.config/openbox/autostart
+        fi
+        echo 'kitty & disown' >> ~/.config/openbox/autostart
+    fi
+}
 # Function to install the chosen desktop environment
 install_desktop_environment() {
     case $1 in
         1)
             echo "Installing GNOME..."
-            sudo pacman -S gnome gnome-extra firefox variety breeze 
+            sudo pacman -S gnome gnome-extra firefox variety breeze kitty
             configure_desktop_environment 1
             ;;
         2)
             echo "Installing KDE Plasma..."
-            sudo pacman -S plasma kde-applications firefox variety breeze 
+            sudo pacman -S plasma kde-applications firefox variety breeze kitty
             configure_desktop_environment 2
             ;;
         3)
             echo "Installing XFCE..."
-            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze
+            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty
             configure_desktop_environment 3
             ;;
         4)
             echo "Installing Cinnamon..."
-            sudo pacman -S cinnamon firefox variety breeze
+            sudo pacman -S cinnamon firefox variety breeze kitty 
             configure_desktop_environment 4
             ;;
         5)
             echo "Installing MATE..."
-            sudo pacman -S mate mate-extra firefox variety breeze 
+            sudo pacman -S mate mate-extra firefox variety breeze kitty
             configure_desktop_environment 5
             ;;
         6)
             echo "Installing LXDE..."
-            sudo pacman -S lxde firefox variety breeze
+            sudo pacman -S lxde firefox variety breeze kitty
             configure_desktop_environment 6
             ;;
         7)
             echo "Installing LXQt..."
-            sudo pacman -S lxqt firefox variety breeze
+            sudo pacman -S lxqt firefox variety breeze kitty
             configure_desktop_environment 7
             ;;
 	8)
 	    echo "Installing Budgie"
-	    sudo pacman -S budgie firefox variety breeze
+	    sudo pacman -S budgie firefox variety breeze kitty
 	    configure_desktop_environment 8
 	    ;;
 	9)
