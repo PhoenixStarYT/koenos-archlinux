@@ -12,7 +12,7 @@ echo "
 ██╗  ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗ ███████╗
 ██║ ██╔╝██╔═══██╗██╔════╝████╗  ██║██╔═══██╗██╔════╝
 █████╔╝ ██║   ██║█████╗  ██╔██╗ ██║██║   ██║███████╗
-██╔═██╗ ██║   ██║██╔═╝   ██║╚██ ██║██║   ██║╚════██║
+██╔═██╗ ██║   ██║██╔╝    ██║╚██ ██║██║   ██║╚════██║
 ██║  ██╗╚██████╔╝███████╗██║ ╚████║╚██████╔╝███████║
 ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
                                                     
@@ -66,29 +66,35 @@ configure_desktop_environment() {
     # Install Firacode Nerd Fonts
     sudo pacman -S --noconfirm ttf-firacode-nerd
 
+    # Clone Tela Circle Icons
+    mkdir -p ~/.icons
+    git clone https://github.com/vinceliuice/Tela-circle-icon-theme ~/.icons/Tela-circle
+
     case $1 in
         1)
             echo "Configuring GNOME..."
             # Add GNOME-specific configuration commands here
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
+            gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
-	    ;;
+            ;;
         2)
             echo "Configuring KDE Plasma..."
             # Add KDE-specific configuration commands here
             kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark'
             kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
+            kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle'
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r 
             systemctl enable sddm
@@ -101,7 +107,7 @@ configure_desktop_environment() {
             xfconf-query -c xsettings -p /Net/CursorThemeName -s 'Breeze'
             xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11'
             mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
@@ -113,10 +119,11 @@ configure_desktop_environment() {
             # Add Cinnamon-specific configuration commands here
             gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
             gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11'
+            gsettings set org.cinnamon.desktop.interface icon-theme 'Tela-circle'
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
@@ -126,10 +133,11 @@ configure_desktop_environment() {
             # Add MATE-specific configuration commands here
             gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark'
             gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11'
+            gsettings set org.mate.interface icon-theme 'Tela-circle'
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
@@ -139,10 +147,11 @@ configure_desktop_environment() {
             # Add LXDE-specific configuration commands here
             sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf
+            echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxsession/LXDE/desktop.conf
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
@@ -152,38 +161,40 @@ configure_desktop_environment() {
             # Add LXQt-specific configuration commands here
             lxqt-config-appearance --set-widget-style Fusion
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf
+            echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxqt/session.conf
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
             ;;
-	8)
-	        echo "Configuring Budgie..."
+        8)
+            echo "Configuring Budgie..."
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-            gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+            gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
             gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
-	        ;;
-	    9)
-	        echo "Configuring i3wm"
-	        mkdir ~/.config
+            ;;
+        9)
+            echo "Configuring i3wm"
+            mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3 ~/.config -r
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes -r
+            cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
-	        git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
+            git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config
+            echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config
             systemctl enable sddm
             ;;
         *)
@@ -243,51 +254,51 @@ install_desktop_environment() {
     case $1 in
         1)
             echo "Installing GNOME..."
-            sudo pacman -S gnome gnome-extra firefox variety breeze kitty sddm
+            sudo pacman -S gnome gnome-extra firefox variety breeze kitty sddm dialog
             configure_desktop_environment 1
             ;;
         2)
             echo "Installing KDE Plasma..."
-            sudo pacman -S plasma kde-applications firefox variety breeze kitty sddm
+            sudo pacman -S plasma kde-applications firefox variety breeze kitty sddm dialog
             configure_desktop_environment 2
             ;;
         3)
             echo "Installing XFCE..."
-            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty sddm
+            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty sddm dialog
             # Install themes and icons
             $AUR_HELPER -S --noconfirm nordic-theme-git tela-icon-theme breeze-cursors
             configure_desktop_environment 3
             ;;
         4)
             echo "Installing Cinnamon..."
-            sudo pacman -S cinnamon firefox variety breeze kitty sddm
+            sudo pacman -S cinnamon firefox variety breeze kitty sddm dialog
             configure_desktop_environment 4
             ;;
         5)
             echo "Installing MATE..."
-            sudo pacman -S mate mate-extra firefox variety breeze kitty sddm
+            sudo pacman -S mate mate-extra firefox variety breeze kitty sddm dialog
             configure_desktop_environment 5
             ;;
         6)
             echo "Installing LXDE..."
-            sudo pacman -S lxde firefox variety breeze kitty sddm
+            sudo pacman -S lxde firefox variety breeze kitty sddm dialog
             configure_desktop_environment 6
             ;;
         7)
             echo "Installing LXQt..."
-            sudo pacman -S lxqt firefox variety breeze kitty sddm
+            sudo pacman -S lxqt firefox variety breeze kitty sddm dialog
             configure_desktop_environment 7
             ;;
-	8)
-	    echo "Installing Budgie"
-	    sudo pacman -S budgie firefox variety breeze kitty sddm
-	    configure_desktop_environment 8
-	    ;;
-	9)
-	    echo "Installing Window Managers"
-	    sudo pacman -S vim unzip picom bspwm i3 awesome openbox polybar lxsession lxpanel sddm rofi kitty terminator thunar flameshot fastfetch sxhkd git lxpolkit lxappearance xorg firefox pulseaudio pavucontrol tar papirus-icon-theme nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome libqt5svg5 qml-module-qtquick-controls qml-module-qtquick-controls2 variety
-	    configure_desktop_environment 9
-	    ;;
+        8)
+            echo "Installing Budgie"
+            sudo pacman -S budgie firefox variety breeze kitty sddm dialog
+            configure_desktop_environment 8
+            ;;
+        9)
+            echo "Installing Window Managers"
+            sudo pacman -S vim unzip picom bspwm i3 awesome openbox polybar lxsession lxpanel sddm rofi kitty terminator thunar flameshot fastfetch sxhkd git lxpolkit lxappearance xorg firefox pulseaudio pavucontrol tar papirus-icon-theme nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome libqt5svg5 qml-module-qtquick-controls qml-module-qtquick-controls2 variety dialog
+            configure_desktop_environment 9
+            ;;
         *)
             echo "Invalid option"
             ;;
