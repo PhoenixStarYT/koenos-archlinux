@@ -12,7 +12,7 @@ echo "
 ██╗  ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗ ███████╗
 ██║ ██╔╝██╔═══██╗██╔════╝████╗  ██║██╔═══██╗██╔════╝
 █████╔╝ ██║   ██║█████╗  ██╔██╗ ██║██║   ██║███████╗
-██╔═██╗ ██║   ██║██╔╝    ██║╚██ ██║██║   ██║╚════██║
+██╔═██╗ ██║   ██║██╔     ██║╚██ ██║██║   ██║╚════██║
 ██║  ██╗╚██████╔╝███████╗██║ ╚████║╚██████╔╝███████║
 ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
                                                     
@@ -70,6 +70,13 @@ configure_desktop_environment() {
     mkdir -p ~/.icons
     git clone https://github.com/vinceliuice/Tela-circle-icon-theme ~/.icons/Tela-circle
 
+    # Clone Nordic theme
+    mkdir -p ~/.themes
+    git clone https://github.com/EliverLara/Nordic ~/.themes/Nordic
+
+    # Install Layan Cursors
+    git clone https://github.com/vinceliuice/Layan-cursors ~/.icons/Layan-cursors
+
     case $1 in
         1)
             echo "Configuring GNOME..."
@@ -77,6 +84,7 @@ configure_desktop_environment() {
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
+            gsettings set org.gnome.desktop.interface cursor-theme 'Layan-cursors'
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -91,6 +99,7 @@ configure_desktop_environment() {
             kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark'
             kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
             kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle'
+            kwriteconfig5 --file kdeglobals --group Cursors --key Theme 'Layan-cursors'
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -104,7 +113,7 @@ configure_desktop_environment() {
             # Add XFCE-specific configuration commands here
             xfconf-query -c xsettings -p /Net/ThemeName -s 'Nordic'
             xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-circle'
-            xfconf-query -c xsettings -p /Net/CursorThemeName -s 'Breeze'
+            xfconf-query -c xsettings -p /Net/CursorThemeName -s 'Layan-cursors'
             xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11'
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
@@ -120,6 +129,7 @@ configure_desktop_environment() {
             gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
             gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.cinnamon.desktop.interface icon-theme 'Tela-circle'
+            gsettings set org.cinnamon.desktop.interface cursor-theme 'Layan-cursors'
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -134,6 +144,7 @@ configure_desktop_environment() {
             gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark'
             gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.mate.interface icon-theme 'Tela-circle'
+            gsettings set org.mate.interface cursor-theme 'Layan-cursors'
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -148,6 +159,7 @@ configure_desktop_environment() {
             sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf
             echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxsession/LXDE/desktop.conf
+            echo 'sNet/CursorThemeName=Layan-cursors' >> ~/.config/lxsession/LXDE/desktop.conf
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -162,6 +174,7 @@ configure_desktop_environment() {
             lxqt-config-appearance --set-widget-style Fusion
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf
             echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxqt/session.conf
+            echo 'sNet/CursorThemeName=Layan-cursors' >> ~/.config/lxqt/session.conf
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -178,7 +191,7 @@ configure_desktop_environment() {
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
-            gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
+            gsettings set org.gnome.desktop.interface cursor-theme 'Layan-cursors'
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             mkdir ~/.config
@@ -195,6 +208,37 @@ configure_desktop_environment() {
             git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config
             echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config
+            echo 'set_from_resource $theme Nordic' >> ~/.config/i3/config
+            echo 'xsetroot -cursor_name Layan-cursors' >> ~/.config/i3/config
+            systemctl enable sddm
+            ;;
+        10)
+            echo "Configuring bspwm..."
+            mkdir -p ~/.config/bspwm
+            mkdir -p ~/.config/sxhkd
+            mkdir -p ~/.config/polybar
+            cp /usr/share/doc/bspwm/examples/bspwmrc ~/.config/bspwm/
+            cp /usr/share/doc/bspwm/examples/sxhkdrc ~/.config/sxhkd/
+            cp /usr/share/doc/polybar/config ~/.config/polybar/
+            chmod +x ~/.config/bspwm/bspwmrc
+            echo 'theme = Nordic' >> ~/.config/bspwm/bspwmrc
+            echo 'xsetroot -cursor_name Layan-cursors' >> ~/.config/bspwm/bspwmrc
+            systemctl enable sddm
+            ;;
+        11)
+            echo "Configuring awesome..."
+            mkdir -p ~/.config/awesome
+            cp /usr/share/doc/awesome/examples/rc.lua ~/.config/awesome/
+            echo 'theme = "Nordic"' >> ~/.config/awesome/rc.lua
+            echo 'xsetroot -cursor_name Layan-cursors' >> ~/.config/awesome/rc.lua
+            systemctl enable sddm
+            ;;
+        12)
+            echo "Configuring openbox..."
+            mkdir -p ~/.config/openbox
+            cp /usr/share/doc/openbox/examples/rc.xml ~/.config/openbox/
+            echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
+            echo 'xsetroot -cursor_name Layan-cursors' >> ~/.config/openbox/rc.xml
             systemctl enable sddm
             ;;
         *)
@@ -295,9 +339,24 @@ install_desktop_environment() {
             configure_desktop_environment 8
             ;;
         9)
-            echo "Installing Window Managers"
-            sudo pacman -S vim unzip picom bspwm i3 awesome openbox polybar lxsession lxpanel sddm rofi kitty terminator thunar flameshot fastfetch sxhkd git lxpolkit lxappearance xorg firefox pulseaudio pavucontrol tar papirus-icon-theme nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome libqt5svg5 qml-module-qtquick-controls qml-module-qtquick-controls2 variety dialog
+            echo "Installing i3wm..."
+            sudo pacman -S i3 thunar rofi kitty terminator flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
             configure_desktop_environment 9
+            ;;
+        10)
+            echo "Installing bspwm..."
+            sudo pacman -S bspwm sxhkd polybar rofi kitty terminator thunar flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
+            configure_desktop_environment 10
+            ;;
+        11)
+            echo "Installing awesome..."
+            sudo pacman -S awesome rofi kitty terminator thunar flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
+            configure_desktop_environment 11
+            ;;
+        12)
+            echo "Installing openbox..."
+            sudo pacman -S openbox rofi kitty terminator thunar flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
+            configure_desktop_environment 12
             ;;
         *)
             echo "Invalid option"
@@ -572,7 +631,7 @@ choose_web_browser
 
 # Choose and install the desktop environment
 PS3='Please enter your choice: '
-options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "Window Managers" "Quit")
+options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "bspwm" "awesome" "openbox" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -608,8 +667,20 @@ do
             install_desktop_environment 8
             break
             ;;
-        "Window Managers")
+        "i3wm")
             install_desktop_environment 9
+            break
+            ;;
+        "bspwm")
+            install_desktop_environment 10
+            break
+            ;;
+        "awesome")
+            install_desktop_environment 11
+            break
+            ;;
+        "openbox")
+            install_desktop_environment 12
             break
             ;;
         "Quit")
