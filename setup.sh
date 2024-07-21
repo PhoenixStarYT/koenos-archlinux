@@ -12,7 +12,7 @@ echo "
 ██╗  ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗ ███████╗
 ██║ ██╔╝██╔═══██╗██╔════╝████╗  ██║██╔═══██╗██╔════╝
 █████╔╝ ██║   ██║█████╗  ██╔██╗ ██║██║   ██║███████╗
-██╔═██╗ ██║   ██║██╔═��╝  ██║╚██╗██║██║   ██║╚════██║
+██╔═██╗ ██║   ██║██╔═╝   ██║╚██ ██║██║   ██║╚════██║
 ██║  ██╗╚██████╔╝███████╗██║ ╚████║╚██████╔╝███████║
 ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
                                                     
@@ -63,12 +63,15 @@ install_aur_helper
 
 # Function to configure the chosen desktop environment
 configure_desktop_environment() {
+    # Install Firacode Nerd Fonts
+    sudo pacman -S --noconfirm ttf-firacode-nerd
+
     case $1 in
         1)
             echo "Configuring GNOME..."
             # Add GNOME-specific configuration commands here
-            # For example:
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+            gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
@@ -80,8 +83,8 @@ configure_desktop_environment() {
         2)
             echo "Configuring KDE Plasma..."
             # Add KDE-specific configuration commands here
-            # For example:
             kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark'
+            kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
@@ -93,12 +96,14 @@ configure_desktop_environment() {
         3)
             echo "Configuring XFCE..."
             # Add XFCE-specific configuration commands here
-            # For example:
-            xfconf-query -c xsettings -p /Net/ThemeName -s 'Greybird-dark'
+            xfconf-query -c xsettings -p /Net/ThemeName -s 'Nordic'
+            xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-circle'
+            xfconf-query -c xsettings -p /Net/CursorThemeName -s 'Breeze'
+            xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11'
             mkdir ~/.themes
-	        cp ~/koenos-archlinux/themes/* ~/.themes
+            cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
-	        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
@@ -106,8 +111,8 @@ configure_desktop_environment() {
         4)
             echo "Configuring Cinnamon..."
             # Add Cinnamon-specific configuration commands here
-            # For example:
             gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
+            gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11'
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
@@ -119,8 +124,8 @@ configure_desktop_environment() {
         5)
             echo "Configuring MATE..."
             # Add MATE-specific configuration commands here
-            # For example:
             gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark'
+            gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11'
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
@@ -132,8 +137,8 @@ configure_desktop_environment() {
         6)
             echo "Configuring LXDE..."
             # Add LXDE-specific configuration commands here
-            # For example:
             sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf
+            echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
@@ -145,8 +150,8 @@ configure_desktop_environment() {
         7)
             echo "Configuring LXQt..."
             # Add LXQt-specific configuration commands here
-            # For example:
             lxqt-config-appearance --set-widget-style Fusion
+            echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf
             mkdir ~/.themes
 	        cp ~/koenos-archlinux/themes/* ~/.themes
             mkdir ~/.wallpaper
@@ -165,6 +170,7 @@ configure_desktop_environment() {
             gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
             gsettings set org.gnome.desktop.interface cursor-theme 'Breeze'
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
+            gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             systemctl enable sddm
@@ -177,8 +183,7 @@ configure_desktop_environment() {
 	        cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
 	        git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config
             systemctl enable sddm
             ;;
         *)
@@ -249,6 +254,8 @@ install_desktop_environment() {
         3)
             echo "Installing XFCE..."
             sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty sddm
+            # Install themes and icons
+            $AUR_HELPER -S --noconfirm nordic-theme-git tela-icon-theme breeze-cursors
             configure_desktop_environment 3
             ;;
         4)
@@ -355,12 +362,20 @@ install_libretro() {
     sudo pacman -S --noconfirm libretro
 }
 
+# Function to install Minecraft
+install_minecraft() {
+    echo "Installing Minecraft..."
+    sudo pacman -S --noconfirm jdk-openjdk
+    $AUR_HELPER -S --noconfirm minecraft-launcher
+    $AUR_HELPER -S --noconfirm multimc-bin
+}
+
 # Function to install gaming-related software
 install_gaming_software() {
     read -p "Do you want to install gaming-related software? (y/n): " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
         PS3="Select an option (enter the number): "
-        options=("Steam" "Lutris" "Wine" "Libretro" "All" "None")
+        options=("Steam" "Lutris" "Wine" "Libretro" "Minecraft" "All" "None")
         select opt in "${options[@]}"; do
             case $opt in
                 "Steam")
@@ -379,11 +394,16 @@ install_gaming_software() {
                     install_libretro
                     break
                     ;;
+                "Minecraft")
+                    install_minecraft
+                    break
+                    ;;
                 "All")
                     install_steam
                     install_lutris
                     install_wine
                     install_libretro
+                    install_minecraft
                     break
                     ;;
                 "None")
@@ -400,8 +420,144 @@ install_gaming_software() {
     fi
 }
 
+# Function to install multimedia tools
+install_multimedia_tools() {
+    read -p "Do you want to install multimedia tools (mpv, Clementine, Kodi)? (y/n): " answer
+    if [[ $answer =~ ^[Yy]$ ]]; then
+        echo "Installing multimedia tools..."
+        sudo pacman -S --noconfirm mpv clementine kodi
+    else
+        echo "Skipping installation of multimedia tools."
+    fi
+}
+
 # Main script starts here
 detect_aur_helper
+
+# Choose and install the web browser
+choose_web_browser() {
+    echo "Choose a web browser to install:"
+    echo "1. Google Chrome"
+    echo "2. Brave"
+    echo "3. Firefox"
+    echo "4. Qutebrowser"
+    echo "5. Thorium"
+    echo "6. Microsoft Edge"
+    echo "7. Vivaldi"
+    echo "8. Opera"
+
+    read -rp "Enter the number of the web browser you want to install: " choice
+    case $choice in
+        1)
+            echo "Installing Google Chrome..."
+            $AUR_HELPER -S --noconfirm google-chrome
+            BROWSER="google-chrome"
+            ;;
+        2)
+            echo "Installing Brave..."
+            $AUR_HELPER -S --noconfirm brave-bin
+            BROWSER="brave"
+            ;;
+        3)
+            echo "Installing Firefox..."
+            sudo pacman -S --noconfirm firefox
+            BROWSER="firefox"
+            ;;
+        4)
+            echo "Installing Qutebrowser..."
+            sudo pacman -S --noconfirm qutebrowser
+            BROWSER="qutebrowser"
+            ;;
+        5)
+            echo "Installing Thorium..."
+            $AUR_HELPER -S --noconfirm thorium
+            BROWSER="thorium"
+            ;;
+        6)
+            echo "Installing Microsoft Edge..."
+            $AUR_HELPER -S --noconfirm microsoft-edge-stable-bin
+            BROWSER="microsoft-edge-stable"
+            ;;
+        7)
+            echo "Installing Vivaldi..."
+            $AUR_HELPER -S --noconfirm vivaldi
+            BROWSER="vivaldi"
+            ;;
+        8)
+            echo "Installing Opera..."
+            sudo pacman -S --noconfirm opera
+            BROWSER="opera"
+            ;;
+        *)
+            echo "Invalid choice. Please run the script again and select a valid option."
+            exit 1
+            ;;
+    esac
+
+    set_default_browser
+}
+
+# Function to set the chosen browser as the default
+set_default_browser() {
+    echo "Setting $BROWSER as the default web browser..."
+
+    # For GNOME-based environments
+    if command -v gsettings &> /dev/null; then
+        gsettings set org.gnome.system.proxy mode 'none'
+        gsettings set org.gnome.system.proxy.http host ''
+        gsettings set org.gnome.system.proxy.http port 0
+        gsettings set org.gnome.system.proxy.https host ''
+        gsettings set org.gnome.system.proxy.https port 0
+        gsettings set org.gnome.system.proxy.ftp host ''
+        gsettings set org.gnome.system.proxy.ftp port 0
+        gsettings set org.gnome.system.proxy.socks host ''
+        gsettings set org.gnome.system.proxy.socks port 0
+        gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1']"
+        gsettings set org.gnome.desktop.default-applications.browser exec "$BROWSER"
+        gsettings set org.gnome.desktop.default-applications.browser exec-arg ""
+    fi
+
+    # For KDE-based environments
+    if command -v update-alternatives &> /dev/null; then
+        sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/$BROWSER 200
+        sudo update-alternatives --set x-www-browser /usr/bin/$BROWSER
+    fi
+
+    # For XFCE
+    if command -v xfconf-query &> /dev/null; then
+        xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -s $BROWSER -a
+    fi
+
+    # For other environments (LXDE, LXQt, etc.)
+    if [ -f ~/.config/lxsession/LXDE/autostart ]; then
+        echo "@$BROWSER" >> ~/.config/lxsession/LXDE/autostart
+    fi
+
+    # For i3
+    if [ -d ~/.config/i3 ]; then
+        echo 'bindsym $mod+Shift+b exec $BROWSER' >> ~/.config/i3/config
+    fi
+
+    # For bspwm
+    if [ -d ~/.config/bspwm ]; then
+        echo 'super + b
+	$BROWSER' >> ~/.config/sxhkd/sxhkdrc
+    fi
+
+    # For Openbox
+    if [ -d ~/.config/openbox ]; then
+        if [ ! -f ~/.config/openbox/autostart ]; then
+            touch ~/.config/openbox/autostart
+        fi
+        echo '$BROWSER & disown' >> ~/.config/openbox/autostart
+    fi
+}
+
+# Main script starts here
+detect_aur_helper
+
+# Choose and install the web browser
+choose_web_browser
 
 # Choose and install the desktop environment
 PS3='Please enter your choice: '
@@ -457,6 +613,9 @@ install_office_suite
 
 # Install gaming-related software
 install_gaming_software
+
+# Install multimedia tools
+install_multimedia_tools
 
 echo "Installation complete."
 
@@ -543,7 +702,7 @@ echo "
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
 ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
-╚════██║  ╚██╔╝  ════██║   ██║   ██╔══╝  ██║╚██╔╝██║
+╚════██║  ╚██╔╝  ════██║    ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
 ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
                                                      
