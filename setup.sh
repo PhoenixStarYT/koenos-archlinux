@@ -111,6 +111,24 @@ configure_desktop_environment() {
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r 
             systemctl enable sddm
+
+            # Ensure qdbus is available
+            if ! command -v qdbus &> /dev/null; then
+                echo "qdbus could not be found, installing qt5-tools..."
+                sudo pacman -S --noconfirm qt5-tools
+            fi
+
+            # Add widgets to KDE Plasma desktop
+            echo "Adding widgets to KDE Plasma desktop..."
+            plasmashell --replace &
+            sleep 5  # Give plasmashell some time to start
+            qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript '
+            var desktop = desktops()[0];
+            desktop.addWidget("org.kde.plasma.digitalclock");
+            desktop.addWidget("org.kde.plasma.systemmonitor.cpu");
+            desktop.addWidget("org.kde.plasma.systemmonitor.memory");
+            desktop.addWidget("org.kde.plasma.systemmonitor.network");
+            '
             ;;
         3)
             echo "Configuring XFCE..."
@@ -512,6 +530,85 @@ install_multimedia_tools() {
 }
 
 # Main script starts here
+
+# Function to detect available AUR helper
+detect_aur_helper() {
+    if command -v yay &>/dev/null; then
+        AUR_HELPER="yay"
+    elif command -v paru &>/dev/null; then
+        AUR_HELPER="paru"
+    elif command -v trizen &>/dev/null; then
+        AUR_HELPER="trizen"
+    elif command -v yay-bin &>/dev/null; then
+        AUR_HELPER="yay-bin"
+    else
+        echo "Error: No supported AUR helper found. Please install yay, paru, trizen, or yay-bin."
+        exit 1
+    fi
+}
+
+# Choose and install the desktop environment
+PS3='Please enter your choice: '
+options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "bspwm" "awesome" "openbox" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "GNOME")
+            install_desktop_environment 1
+            break
+            ;;
+        "KDE Plasma")
+            install_desktop_environment 2
+            break
+            ;;
+        "XFCE")
+            install_desktop_environment 3
+            break
+            ;;
+        "Cinnamon")
+            install_desktop_environment 4
+            break
+            ;;
+        "MATE")
+            install_desktop_environment 5
+            break
+            ;;
+        "LXDE")
+            install_desktop_environment 6
+            break
+            ;;
+        "LXQt")
+            install_desktop_environment 7
+            break
+            ;;
+        "Budgie")
+            install_desktop_environment 8
+            break
+            ;;
+        "i3wm")
+            install_desktop_environment 9
+            break
+            ;;
+        "bspwm")
+            install_desktop_environment 10
+            break
+            ;;
+        "awesome")
+            install_desktop_environment 11
+            break
+            ;;
+        "openbox")
+            install_desktop_environment 12
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "Invalid option $REPLY";;
+    esac
+done
+
+# Main script continues here
 detect_aur_helper
 
 # Choose and install the web browser
@@ -633,72 +730,8 @@ set_default_browser() {
     fi
 }
 
-# Main script starts here
-detect_aur_helper
-
-# Choose and install the web browser
+# Main script continues here
 choose_web_browser
-
-# Choose and install the desktop environment
-PS3='Please enter your choice: '
-options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "bspwm" "awesome" "openbox" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "GNOME")
-            install_desktop_environment 1
-            break
-            ;;
-        "KDE Plasma")
-            install_desktop_environment 2
-            break
-            ;;
-        "XFCE")
-            install_desktop_environment 3
-            break
-            ;;
-        "Cinnamon")
-            install_desktop_environment 4
-            break
-            ;;
-        "MATE")
-            install_desktop_environment 5
-            break
-            ;;
-        "LXDE")
-            install_desktop_environment 6
-            break
-            ;;
-        "LXQt")
-            install_desktop_environment 7
-            break
-            ;;
-        "Budgie")
-            install_desktop_environment 8
-            break
-            ;;
-        "i3wm")
-            install_desktop_environment 9
-            break
-            ;;
-        "bspwm")
-            install_desktop_environment 10
-            break
-            ;;
-        "awesome")
-            install_desktop_environment 11
-            break
-            ;;
-        "openbox")
-            install_desktop_environment 12
-            break
-            ;;
-        "Quit")
-            break
-            ;;
-        *) echo "Invalid option $REPLY";;
-    esac
-done
 
 # Install office suite
 install_office_suite
@@ -710,22 +743,6 @@ install_gaming_software
 install_multimedia_tools
 
 echo "Installation complete."
-
-# Function to detect available AUR helper
-detect_aur_helper() {
-    if command -v yay &>/dev/null; then
-        AUR_HELPER="yay"
-    elif command -v paru &>/dev/null; then
-        AUR_HELPER="paru"
-    elif command -v trizen &>/dev/null; then
-        AUR_HELPER="trizen"
-    elif command -v yay-bin &>/dev/null; then
-        AUR_HELPER="yay-bin"
-    else
-        echo "Error: No supported AUR helper found. Please install yay, paru, trizen, or yay-bin."
-        exit 1
-    fi
-}
 
 # Install themes
 mkdir ~/.themes
