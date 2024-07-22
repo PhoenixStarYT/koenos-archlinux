@@ -77,6 +77,9 @@ configure_desktop_environment() {
     # Install Layan Cursors
     git clone https://github.com/vinceliuice/Layan-cursors ~/.icons/Layan-cursors
 
+    # Install Breeze Cursors
+    sudo pacman -S --noconfirm breeze
+
     case $1 in
         1)
             echo "Configuring GNOME..."
