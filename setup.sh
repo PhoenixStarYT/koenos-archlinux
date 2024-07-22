@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Display a welcome message with ASCII art
 echo "
 
 ██████╗ ███████╗██╗   ██╗████████╗                  
@@ -18,14 +19,13 @@ echo "
                                                     
 
 "
-# Install AUR Helper
 
 # Define the list of AUR helpers
 AUR_HELPERS=("yay" "paru" "trizen" "aura" "pikaur")
 
 # Function to display the list and let the user pick an AUR helper
 choose_aur_helper() {
-    echo "Available AUR helpers:"
+    echo "Pick your AUR Helper here (Use this to install packages):"
     for i in "${!AUR_HELPERS[@]}"; do
         echo "$((i+1)). ${AUR_HELPERS[$i]}"
     done
@@ -79,10 +79,12 @@ configure_desktop_environment() {
 
     # Install Breeze Cursors
     sudo pacman -S --noconfirm breeze
+
+    # Configure the desktop environment based on the user's choice
     case $1 in
         1)
             echo "Configuring GNOME..."
-            # Add GNOME-specific configuration commands here
+            # GNOME-specific configuration commands
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
@@ -97,7 +99,7 @@ configure_desktop_environment() {
             ;;
         2)
             echo "Configuring KDE Plasma..."
-            # Add KDE-specific configuration commands here
+            # KDE-specific configuration commands
             kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark'
             kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
             kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle'
@@ -112,7 +114,7 @@ configure_desktop_environment() {
             ;;
         3)
             echo "Configuring XFCE..."
-            # Add XFCE-specific configuration commands here
+            # XFCE-specific configuration commands
             xfconf-query -c xsettings -p /Net/ThemeName -s 'Nordic'
             xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-circle'
             xfconf-query -c xsettings -p /Net/CursorThemeName -s 'breeze'
@@ -127,7 +129,7 @@ configure_desktop_environment() {
             ;;
         4)
             echo "Configuring Cinnamon..."
-            # Add Cinnamon-specific configuration commands here
+            # Cinnamon-specific configuration commands
             gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
             gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.cinnamon.desktop.interface icon-theme 'Tela-circle'
@@ -142,7 +144,7 @@ configure_desktop_environment() {
             ;;
         5)
             echo "Configuring MATE..."
-            # Add MATE-specific configuration commands here
+            # MATE-specific configuration commands
             gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark'
             gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.mate.interface icon-theme 'Tela-circle'
@@ -157,7 +159,7 @@ configure_desktop_environment() {
             ;;
         6)
             echo "Configuring LXDE..."
-            # Add LXDE-specific configuration commands here
+            # LXDE-specific configuration commands
             sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf
             echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxsession/LXDE/desktop.conf
@@ -172,7 +174,7 @@ configure_desktop_environment() {
             ;;
         7)
             echo "Configuring LXQt..."
-            # Add LXQt-specific configuration commands here
+            # LXQt-specific configuration commands
             lxqt-config-appearance --set-widget-style Fusion
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf
             echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxqt/session.conf
@@ -187,6 +189,7 @@ configure_desktop_environment() {
             ;;
         8)
             echo "Configuring Budgie..."
+            # Budgie-specific configuration commands
             mkdir ~/.themes
             cp ~/koenos-archlinux/themes/* ~/.themes -r
             mkdir ~/.wallpaper
@@ -202,6 +205,7 @@ configure_desktop_environment() {
             ;;
         9)
             echo "Configuring i3wm"
+            # i3wm-specific configuration commands
             mkdir ~/.config
             cp ~/koenos-archlinux/dotconfig-i3 ~/.config -r
             mkdir ~/.themes
@@ -216,6 +220,7 @@ configure_desktop_environment() {
             ;;
         10)
             echo "Configuring bspwm..."
+            # bspwm-specific configuration commands
             mkdir -p ~/.config/bspwm
             mkdir -p ~/.config/sxhkd
             mkdir -p ~/.config/polybar
@@ -229,6 +234,7 @@ configure_desktop_environment() {
             ;;
         11)
             echo "Configuring awesome..."
+            # awesome-specific configuration commands
             mkdir -p ~/.config/awesome
             cp /usr/share/doc/awesome/examples/rc.lua ~/.config/awesome/
             echo 'theme = "Nordic"' >> ~/.config/awesome/rc.lua
@@ -237,6 +243,7 @@ configure_desktop_environment() {
             ;;
         12)
             echo "Configuring openbox..."
+            # openbox-specific configuration commands
             mkdir -p ~/.config/openbox
             cp /usr/share/doc/openbox/examples/rc.xml ~/.config/openbox/
             echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
@@ -295,6 +302,7 @@ configure_kitty_as_default() {
         echo 'kitty & disown' >> ~/.config/openbox/autostart
     fi
 }
+
 # Function to install the chosen desktop environment
 install_desktop_environment() {
     case $1 in
