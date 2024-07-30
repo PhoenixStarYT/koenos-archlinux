@@ -82,34 +82,28 @@ configure_desktop_environment() {
 
     # Configure the desktop environment based on the user's choice
     case $1 in
-        1)
+        1)  # GNOME
             echo "Configuring GNOME..."
-            # GNOME-specific configuration commands
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
             gsettings set org.gnome.desktop.interface cursor-theme 'breeze'
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        2)
+        2)  # KDE Plasma
             echo "Configuring KDE Plasma..."
-            # KDE-specific configuration commands
             kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark'
             kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
             kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle'
             kwriteconfig5 --file kdeglobals --group Cursors --key Theme 'breeze'
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r 
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
 
             # Ensure qdbus is available
@@ -130,105 +124,98 @@ configure_desktop_environment() {
             desktop.addWidget("org.kde.plasma.systemmonitor.network");
             '
             ;;
-        3)
+        3)  # XFCE
             echo "Configuring XFCE..."
-            # XFCE-specific configuration commands
             xfconf-query -c xsettings -p /Net/ThemeName -s 'Nordic'
             xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-circle'
             xfconf-query -c xsettings -p /Net/CursorThemeName -s 'breeze'
             xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11'
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        4)
+        4)  # Cinnamon
             echo "Configuring Cinnamon..."
-            # Cinnamon-specific configuration commands
             gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
             gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.cinnamon.desktop.interface icon-theme 'Tela-circle'
             gsettings set org.cinnamon.desktop.interface cursor-theme 'breeze'
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        5)
+        5)  # MATE
             echo "Configuring MATE..."
-            # MATE-specific configuration commands
             gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark'
             gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.mate.interface icon-theme 'Tela-circle'
             gsettings set org.mate.interface cursor-theme 'breeze'
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        6)
+        6)  # LXDE
             echo "Configuring LXDE..."
-            # LXDE-specific configuration commands
             sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf
             echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxsession/LXDE/desktop.conf
             echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxsession/LXDE/desktop.conf
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        7)
+        7)  # LXQt
             echo "Configuring LXQt..."
-            # LXQt-specific configuration commands
             lxqt-config-appearance --set-widget-style Fusion
             echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf
             echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxqt/session.conf
             echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxqt/session.conf
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        8)
+        8)  # Budgie
             echo "Configuring Budgie..."
-            # Budgie-specific configuration commands
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
             gsettings set org.gnome.desktop.interface cursor-theme 'breeze'
             gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
             ;;
-        9)
+        9)  # i3wm
             echo "Configuring i3wm"
-            # i3wm-specific configuration commands
-            mkdir ~/.config
-            cp ~/koenos-archlinux/dotconfig-i3 ~/.config -r
-            mkdir ~/.themes
-            cp ~/koenos-archlinux/themes/* ~/.themes -r
-            mkdir ~/.wallpaper
+            mkdir -p ~/.config
+            cp -r ~/koenos-archlinux/dotconfig-i3 ~/.config
+            mkdir -p ~/.themes
+            cp -r ~/koenos-archlinux/themes/* ~/.themes
+            mkdir -p ~/.wallpaper
             git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config
             echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config
@@ -236,24 +223,22 @@ configure_desktop_environment() {
             echo 'xsetroot -cursor_name breeze' >> ~/.config/i3/config
             systemctl enable sddm
             ;;
-        10)
+        10)  # bspwm
             echo "Configuring bspwm..."
-            # Remove bspwm-specific configuration commands
+            # No configuration needed for bspwm
             ;;
-        11)
+        11)  # awesome
             echo "Configuring awesome..."
-            # awesome-specific configuration commands
             mkdir -p ~/.config/
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             echo 'theme = "Nordic"' >> ~/.config/awesome/rc.lua
             echo 'xsetroot -cursor_name breeze' >> ~/.config/awesome/rc.lua
             systemctl enable sddm
             ;;
-        12)
+        12)  # openbox
             echo "Configuring openbox..."
-            # openbox-specific configuration commands
             mkdir -p ~/.config/
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
             echo 'xsetroot -cursor_name breeze' >> ~/.config/openbox/rc.xml
             systemctl enable sddm
@@ -314,62 +299,62 @@ configure_kitty_as_default() {
 # Function to install the chosen desktop environment
 install_desktop_environment() {
     case $1 in
-        1)
+        1)  # GNOME
             echo "Installing GNOME..."
-            sudo pacman -S gnome gnome-extra firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm gnome gnome-extra firefox variety breeze kitty sddm dialog
             configure_desktop_environment 1
             ;;
-        2)
+        2)  # KDE Plasma
             echo "Installing KDE Plasma..."
-            sudo pacman -S plasma kde-applications firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm plasma kde-applications firefox variety breeze kitty sddm dialog
             configure_desktop_environment 2
             ;;
-        3)
+        3)  # XFCE
             echo "Installing XFCE..."
-            sudo pacman -S xfce4 xfce4-goodies firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm xfce4 xfce4-goodies firefox variety breeze kitty sddm dialog
             # Install themes and icons
             $AUR_HELPER -S --noconfirm nordic-theme-git tela-icon-theme breeze-cursors
             configure_desktop_environment 3
             ;;
-        4)
+        4)  # Cinnamon
             echo "Installing Cinnamon..."
-            sudo pacman -S cinnamon firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm cinnamon firefox variety breeze kitty sddm dialog
             configure_desktop_environment 4
             ;;
-        5)
+        5)  # MATE
             echo "Installing MATE..."
-            sudo pacman -S mate mate-extra firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm mate mate-extra firefox variety breeze kitty sddm dialog
             configure_desktop_environment 5
             ;;
-        6)
+        6)  # LXDE
             echo "Installing LXDE..."
-            sudo pacman -S lxde firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm lxde firefox variety breeze kitty sddm dialog
             configure_desktop_environment 6
             ;;
-        7)
+        7)  # LXQt
             echo "Installing LXQt..."
-            sudo pacman -S lxqt firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm lxqt firefox variety breeze kitty sddm dialog
             configure_desktop_environment 7
             ;;
-        8)
+        8)  # Budgie
             echo "Installing Budgie"
-            sudo pacman -S budgie firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm budgie firefox variety breeze kitty sddm dialog
             configure_desktop_environment 8
             ;;
-        9)
+        9)  # i3wm
             echo "Installing i3wm..."
-            sudo pacman -S i3 thunar rofi kitty terminator flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
+            sudo pacman -S --noconfirm i3 thunar rofi kitty terminator flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
             configure_desktop_environment 9
             ;;
-        10)
+        10)  # bspwm
             echo "Installing bspwm..."
-            # Remove bspwm installation
+            # No installation needed for bspwm
             ;;
-        11)
+        11)  # awesome
             echo "Installing awesome..."
             sudo pacman -S --noconfirm awesome
             ;;
-        12)
+        12)  # openbox
             echo "Installing openbox..."
             sudo pacman -S --noconfirm openbox
             ;;
@@ -728,11 +713,11 @@ install_multimedia_tools
 echo "Installation complete."
 
 # Install themes
-mkdir ~/.themes
-mkdir ~/.icons
+mkdir -p ~/.themes
+mkdir -p ~/.icons
 git clone https://github.com/PhoenixStarYT/KoenOS-Themes ~
-cp ~/KoenOS-Themes/Widgets ~/.themes -r
-cp ~/KoenOS-Themes/Icons ~/.icons -r
+cp -r ~/KoenOS-Themes/Widgets ~/.themes
+cp -r ~/KoenOS-Themes/Icons ~/.icons
 
 # Function to install Starship prompt
 install_starship() {
@@ -812,4 +797,3 @@ GREEN="\e[32m"
 RESET="\e[0m"
 
 echo -e "${GREEN}Reboot your system to see the final results${RESET}"
-i
