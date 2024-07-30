@@ -238,13 +238,7 @@ configure_desktop_environment() {
             ;;
         10)
             echo "Configuring bspwm..."
-            # bspwm-specific configuration commands
-            mkdir -p ~/.config/
-            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
-            chmod +x ~/.config/bspwm/bspwmrc
-            echo 'theme = Nordic' >> ~/.config/bspwm/bspwmrc
-            echo 'xsetroot -cursor_name breeze' >> ~/.config/bspwm/bspwmrc
-            systemctl enable sddm
+            # Remove bspwm-specific configuration commands
             ;;
         11)
             echo "Configuring awesome..."
@@ -369,18 +363,15 @@ install_desktop_environment() {
             ;;
         10)
             echo "Installing bspwm..."
-            sudo pacman -S bspwm sxhkd polybar rofi kitty terminator thunar flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
-            configure_desktop_environment 10
+            # Remove bspwm installation
             ;;
         11)
             echo "Installing awesome..."
-            sudo pacman -S awesome rofi kitty terminator thunar flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
-            configure_desktop_environment 11
+            sudo pacman -S --noconfirm awesome
             ;;
         12)
             echo "Installing openbox..."
-            sudo pacman -S openbox rofi kitty terminator thunar flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
-            configure_desktop_environment 12
+            sudo pacman -S --noconfirm openbox
             ;;
         *)
             echo "Invalid option"
@@ -545,7 +536,7 @@ detect_aur_helper() {
 
 # Choose and install the desktop environment
 PS3='Please enter your choice: '
-options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "bspwm" "awesome" "openbox" "Quit")
+options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "awesome" "openbox" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -583,10 +574,6 @@ do
             ;;
         "i3wm")
             install_desktop_environment 9
-            break
-            ;;
-        "bspwm")
-            install_desktop_environment 10
             break
             ;;
         "awesome")
