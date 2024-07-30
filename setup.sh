@@ -239,12 +239,8 @@ configure_desktop_environment() {
         10)
             echo "Configuring bspwm..."
             # bspwm-specific configuration commands
-            mkdir -p ~/.config/bspwm
-            mkdir -p ~/.config/sxhkd
-            mkdir -p ~/.config/polybar
-            cp /usr/share/doc/bspwm/examples/bspwmrc ~/.config/bspwm/
-            cp /usr/share/doc/bspwm/examples/sxhkdrc ~/.config/sxhkd/
-            cp /usr/share/doc/polybar/config ~/.config/polybar/
+            mkdir -p ~/.config/
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             chmod +x ~/.config/bspwm/bspwmrc
             echo 'theme = Nordic' >> ~/.config/bspwm/bspwmrc
             echo 'xsetroot -cursor_name breeze' >> ~/.config/bspwm/bspwmrc
@@ -253,8 +249,8 @@ configure_desktop_environment() {
         11)
             echo "Configuring awesome..."
             # awesome-specific configuration commands
-            mkdir -p ~/.config/awesome
-            cp /usr/share/doc/awesome/examples/rc.lua ~/.config/awesome/
+            mkdir -p ~/.config/
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             echo 'theme = "Nordic"' >> ~/.config/awesome/rc.lua
             echo 'xsetroot -cursor_name breeze' >> ~/.config/awesome/rc.lua
             systemctl enable sddm
@@ -262,8 +258,8 @@ configure_desktop_environment() {
         12)
             echo "Configuring openbox..."
             # openbox-specific configuration commands
-            mkdir -p ~/.config/openbox
-            cp /usr/share/doc/openbox/examples/rc.xml ~/.config/openbox/
+            mkdir -p ~/.config/
+            cp ~/koenos-archlinux/dotconfig-i3/* ~/.config -r
             echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
             echo 'xsetroot -cursor_name breeze' >> ~/.config/openbox/rc.xml
             systemctl enable sddm
@@ -811,7 +807,7 @@ echo "
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
 ██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
-╚════██║  ╚██╔╝  ════██║    ██║   ██╔══╝  ██║╚██╔╝██║
+╚════██║  ╚██╔╝  =════██║   ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
 ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
                                                      
@@ -829,4 +825,4 @@ GREEN="\e[32m"
 RESET="\e[0m"
 
 echo -e "${GREEN}Reboot your system to see the final results${RESET}"
-
+i
