@@ -221,26 +221,18 @@ configure_desktop_environment() {
             echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config
             echo 'set_from_resource $theme Nordic' >> ~/.config/i3/config
             echo 'xsetroot -cursor_name breeze' >> ~/.config/i3/config
+            # Set pcmanfm as the default file manager
+            echo 'bindsym $mod+e exec pcmanfm' >> ~/.config/i3/config
             systemctl enable sddm
             ;;
-        10)  # bspwm
-            echo "Configuring bspwm..."
-            # No configuration needed for bspwm
-            ;;
-        11)  # awesome
-            echo "Configuring awesome..."
-            mkdir -p ~/.config/
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            echo 'theme = "Nordic"' >> ~/.config/awesome/rc.lua
-            echo 'xsetroot -cursor_name breeze' >> ~/.config/awesome/rc.lua
-            systemctl enable sddm
-            ;;
-        12)  # openbox
+        10)  # openbox
             echo "Configuring openbox..."
             mkdir -p ~/.config/
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
             echo 'xsetroot -cursor_name breeze' >> ~/.config/openbox/rc.xml
+            # Set pcmanfm as the default file manager
+            echo 'pcmanfm & disown' >> ~/.config/openbox/autostart
             systemctl enable sddm
             ;;
         *)
@@ -279,12 +271,6 @@ configure_kitty_as_default() {
     # For i3
     if [ -d ~/.config/i3 ]; then
         echo 'bindsym $mod+Return exec kitty' >> ~/.config/i3/config
-    fi
-
-    # For bspwm
-    if [ -d ~/.config/bspwm ]; then
-        echo 'super + Return
-	kitty' >> ~/.config/sxhkd/sxhkdrc
     fi
 
     # For Openbox
@@ -346,17 +332,10 @@ install_desktop_environment() {
             sudo pacman -S --noconfirm i3 thunar rofi kitty terminator flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
             configure_desktop_environment 9
             ;;
-        10)  # bspwm
-            echo "Installing bspwm..."
-            # No installation needed for bspwm
-            ;;
-        11)  # awesome
-            echo "Installing awesome..."
-            sudo pacman -S --noconfirm awesome
-            ;;
-        12)  # openbox
+        10)  # openbox
             echo "Installing openbox..."
-            sudo pacman -S --noconfirm openbox
+            sudo pacman -S --noconfirm openbox lxpanel 
+            configure_desktop_environment 10
             ;;
         *)
             echo "Invalid option"
@@ -521,7 +500,7 @@ detect_aur_helper() {
 
 # Choose and install the desktop environment
 PS3='Please enter your choice: '
-options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "awesome" "openbox" "Quit")
+options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "openbox" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -561,12 +540,8 @@ do
             install_desktop_environment 9
             break
             ;;
-        "awesome")
-            install_desktop_environment 11
-            break
-            ;;
         "openbox")
-            install_desktop_environment 12
+            install_desktop_environment 10
             break
             ;;
         "Quit")
@@ -777,7 +752,7 @@ install_networking_tools
 echo "
 
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
-██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
+██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝███��╗ ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
 ╚════██║  ╚██╔╝  =════██║   ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
