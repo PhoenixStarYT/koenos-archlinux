@@ -63,6 +63,22 @@ install_aur_helper
 
 # Function to configure the chosen desktop environment
 configure_desktop_environment() {
+    # Ensure git is installed
+    if ! command -v git &> /dev/null; then
+        echo "Git is not installed. Installing git..."
+        sudo pacman -S --noconfirm git
+    fi
+
+    # Create wallpaper directory if it doesn't exist
+    mkdir -p ~/.wallpaper
+
+    # Clone wallpapers if not already cloned
+    if [ ! -d ~/.wallpaper/koenos-wallpapers ]; then
+        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+    else
+        echo "Wallpapers already cloned, skipping..."
+    fi
+
     # Install Firacode Nerd Fonts
     sudo pacman -S --noconfirm ttf-firacode-nerd
 
@@ -88,8 +104,6 @@ configure_desktop_environment() {
             gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
             gsettings set org.gnome.desktop.interface cursor-theme 'breeze'
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -100,8 +114,6 @@ configure_desktop_environment() {
             kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
             kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle'
             kwriteconfig5 --file kdeglobals --group Cursors --key Theme 'breeze'
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -132,8 +144,6 @@ configure_desktop_environment() {
             xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11'
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -146,8 +156,6 @@ configure_desktop_environment() {
             gsettings set org.cinnamon.desktop.interface cursor-theme 'breeze'
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -160,8 +168,6 @@ configure_desktop_environment() {
             gsettings set org.mate.interface cursor-theme 'breeze'
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -174,8 +180,6 @@ configure_desktop_environment() {
             echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxsession/LXDE/desktop.conf
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -188,8 +192,6 @@ configure_desktop_environment() {
             echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxqt/session.conf
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             mkdir -p ~/.config
             cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
             systemctl enable sddm
@@ -198,8 +200,6 @@ configure_desktop_environment() {
             echo "Configuring Budgie..."
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
             gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
             gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
             gsettings set org.gnome.desktop.interface cursor-theme 'breeze'
@@ -215,8 +215,6 @@ configure_desktop_environment() {
             cp -r ~/koenos-archlinux/dotconfig-i3 ~/.config
             mkdir -p ~/.themes
             cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.wallpaper
-            git clone https://github.com/PhoenixStarYT/koenos-wallpapers.git ~/.wallpaper
             echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config
             echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config
             echo 'set_from_resource $theme Nordic' >> ~/.config/i3/config
@@ -314,22 +312,22 @@ install_desktop_environment() {
             ;;
         6)  # LXDE
             echo "Installing LXDE..."
-            sudo pacman -S --noconfirm lxde firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm lxde firefox variety breeze kitty dialog
             configure_desktop_environment 6
             ;;
         7)  # LXQt
             echo "Installing LXQt..."
-            sudo pacman -S --noconfirm lxqt firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm lxqt firefox variety breeze kitty dialog
             configure_desktop_environment 7
             ;;
         8)  # Budgie
             echo "Installing Budgie"
-            sudo pacman -S --noconfirm budgie firefox variety breeze kitty sddm dialog
+            sudo pacman -S --noconfirm budgie firefox variety breeze kitty dialog
             configure_desktop_environment 8
             ;;
         9)  # i3wm
             echo "Installing i3wm..."
-            sudo pacman -S --noconfirm i3 thunar rofi kitty terminator flameshot fastfetch git lxpolkit lxappearance xorg nitrogen lxappearance breeze fonts-noto-color-emoji fonts-firacode fonts-font-awesome variety dialog
+            sudo pacman -S --noconfirm i3 firefox variety breeze kitty dialog
             configure_desktop_environment 9
             ;;
         10)  # openbox
@@ -339,6 +337,52 @@ install_desktop_environment() {
             ;;
         *)
             echo "Invalid option"
+            ;;
+    esac
+
+    # Call the function to choose the display manager
+    choose_display_manager
+}
+
+# Function to choose and install the display manager
+choose_display_manager() {
+    echo "Choose your preferred display manager:"
+    echo "1. SDDM"
+    echo "2. GDM"
+    echo "3. LightDM"
+    echo "4. LXDM"
+    echo "5. XDM"
+
+    read -rp "Enter the number of the display manager you want to install: " choice
+    case $choice in
+        1)
+            echo "Installing SDDM..."
+            sudo pacman -S --noconfirm sddm
+            systemctl enable sddm
+            ;;
+        2)
+            echo "Installing GDM..."
+            sudo pacman -S --noconfirm gdm
+            systemctl enable gdm
+            ;;
+        3)
+            echo "Installing LightDM..."
+            sudo pacman -S --noconfirm lightdm lightdm-gtk-greeter
+            systemctl enable lightdm
+            ;;
+        4)
+            echo "Installing LXDM..."
+            sudo pacman -S --noconfirm lxdm
+            systemctl enable lxdm
+            ;;
+        5)
+            echo "Installing XDM..."
+            sudo pacman -S --noconfirm xdm
+            systemctl enable xdm
+            ;;
+        *)
+            echo "Invalid choice. Please run the script again and select a valid option."
+            exit 1
             ;;
     esac
 }
@@ -752,14 +796,14 @@ install_networking_tools
 echo "
 
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
-██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝███��╗ ████║
+██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝███╗  ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
 ╚════██║  ╚██╔╝  =════██║   ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
 ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
                                                      
-██████╗ ███████╗ █████╗ ██████╗ ██╗   ██╗            
-██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝            
+██████╗ ███████╗ █████╗ ██████╗  ██╗   ██╗            
+██╔══██╗██╔════╝█╔══██╗██╔══██╗ ╚██╗  ██╔╝            
 ██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝             
 ██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝              
 ██║  ██║███████╗██║  ██║██████╔╝   ██║               
