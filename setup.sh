@@ -394,11 +394,9 @@ install_office_suite() {
     echo "1. LibreOffice"
     echo "2. OnlyOffice"
     echo "3. WPS Office"
-    echo "4. Calligra Suite"
-    echo "5. SoftMaker Office"
-    echo "6. Skip installation"
+    echo "4. Skip installation"
 
-    read -p "Enter your choice [1-6]: " choice
+    read -p "Enter your choice [1-4]: " choice
 
     case $choice in
         1)
@@ -407,25 +405,17 @@ install_office_suite() {
             ;;
         2)
             echo "Installing OnlyOffice..."
-            $AUR_HELPER -S --noconfirm onlyoffice-desktopeditors-bin
+            $AUR_HELPER -S --noconfirm onlyoffice-bin
             ;;
         3)
             echo "Installing WPS Office..."
             $AUR_HELPER -S --noconfirm wps-office
             ;;
         4)
-            echo "Installing Calligra Suite..."
-            sudo pacman -S --noconfirm calligra
-            ;;
-        5)
-            echo "Installing SoftMaker Office..."
-            $AUR_HELPER -S --noconfirm softmaker-office
-            ;;
-        6)
             echo "Skipping office suite installation."
             ;;
         *)
-            echo "Invalid choice. Please enter a number from 1 to 6."
+            echo "Invalid choice. Please enter a number from 1 to 4."
             install_office_suite
             ;;
     esac
@@ -719,6 +709,15 @@ set_default_browser() {
 
 # Main script continues here
 choose_web_browser
+
+# Ask user if they want to install pamac
+read -p "Do you want to install pamac (graphical package manager)? (y/n): " install_pamac
+if [[ $install_pamac =~ ^[Yy]$ ]]; then
+    echo "Installing pamac using $AUR_HELPER..."
+    $AUR_HELPER -S --noconfirm pamac
+else
+    echo "Skipping installation of pamac."
+fi
 
 # Install office suite
 install_office_suite
