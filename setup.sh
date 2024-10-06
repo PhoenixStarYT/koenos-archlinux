@@ -233,6 +233,35 @@ configure_desktop_environment() {
             echo 'pcmanfm & disown' >> ~/.config/openbox/autostart
             systemctl enable sddm
             ;;
+        11)  # bspwm
+            echo "Installing bspwm..."
+            sudo pacman -S --noconfirm bspwm picom variety thunar polybar
+            
+            # Prompt user to choose between dmenu and rofi
+            echo "Choose your application launcher:"
+            echo "1. dmenu"
+            echo "2. rofi"
+            read -rp "Enter the number of your choice: " launcher_choice
+            
+            case $launcher_choice in
+                1)
+                    echo "Installing dmenu..."
+                    sudo pacman -S --noconfirm dmenu
+                    ;;
+                2)
+                    echo "Installing rofi..."
+                    sudo pacman -S --noconfirm rofi
+                    ;;
+                *)
+                    echo "Invalid choice. Skipping installation of application launcher."
+                    ;;
+            esac
+            
+            # Clone dotfiles for bspwm
+            git clone https://github.com/PhoenixStarYT/dotfiles-bspwm-koenos ~/.config/bspwm
+            cp -r ~/.config/bspwm/* ~/.config/
+            configure_desktop_environment 11
+            ;;
         *)
             echo "Invalid option"
             ;;
@@ -334,6 +363,35 @@ install_desktop_environment() {
             echo "Installing openbox..."
             sudo pacman -S --noconfirm openbox lxpanel 
             configure_desktop_environment 10
+            ;;
+        11)  # bspwm
+            echo "Installing bspwm..."
+            sudo pacman -S --noconfirm bspwm picom variety thunar polybar
+            
+            # Prompt user to choose between dmenu and rofi
+            echo "Choose your application launcher:"
+            echo "1. dmenu"
+            echo "2. rofi"
+            read -rp "Enter the number of your choice: " launcher_choice
+            
+            case $launcher_choice in
+                1)
+                    echo "Installing dmenu..."
+                    sudo pacman -S --noconfirm dmenu
+                    ;;
+                2)
+                    echo "Installing rofi..."
+                    sudo pacman -S --noconfirm rofi
+                    ;;
+                *)
+                    echo "Invalid choice. Skipping installation of application launcher."
+                    ;;
+            esac
+            
+            # Clone dotfiles for bspwm
+            git clone https://github.com/PhoenixStarYT/dotfiles-bspwm-koenos ~/.config/bspwm
+            cp -r ~/.config/bspwm/* ~/.config/
+            configure_desktop_environment 11
             ;;
         *)
             echo "Invalid option"
@@ -534,7 +592,7 @@ detect_aur_helper() {
 
 # Choose and install the desktop environment
 PS3='Please enter your choice: '
-options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "openbox" "Quit")
+options=("GNOME" "KDE Plasma" "XFCE" "Cinnamon" "MATE" "LXDE" "LXQt" "Budgie" "i3wm" "openbox" "bspwm" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -576,6 +634,10 @@ do
             ;;
         "openbox")
             install_desktop_environment 10
+            break
+            ;;
+        "bspwm")
+            install_desktop_environment 11
             break
             ;;
         "Quit")
