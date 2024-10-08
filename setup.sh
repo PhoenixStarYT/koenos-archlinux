@@ -79,6 +79,13 @@ configure_desktop_environment() {
         echo "Wallpapers already cloned, skipping..."
     fi
 
+    # Clone Nord background
+    if [ ! -d ~/.wallpaper/nord-background ]; then
+        git clone https://github.com/ChrisTitusTech/nord-background ~/.wallpaper
+    else
+        echo "Nord background already cloned, skipping..."
+    fi
+
     # Install Firacode Nerd Fonts
     sudo pacman -S --noconfirm ttf-firacode-nerd
 
@@ -225,8 +232,7 @@ configure_desktop_environment() {
             ;;
         10)  # openbox
             echo "Configuring openbox..."
-            mkdir -p ~/.config/
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
+            git clone https://github.com/PhoenixStarYT/dotfiles-openbox-koenos ~
             echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
             echo 'xsetroot -cursor_name breeze' >> ~/.config/openbox/rc.xml
             # Set pcmanfm as the default file manager
@@ -876,7 +882,7 @@ echo "
 ██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝             
 ██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝              
 ██║  ██║███████╗██║  ██║██████╔╝   ██║               
-╚═╝  ╚═╝╚═══��══╝╚═��  ╚═╝╚═════╝    ╚═╝               
+╚═╝  ╚═╝╚═════╝╚═  ╚═╝╚═════╝    ╚═╝               
                                                      
 
 "
