@@ -372,6 +372,9 @@ install_desktop_environment() {
         10)  # openbox
             echo "Installing openbox..."
             sudo pacman -S --noconfirm openbox lxpanel 
+            git clone https://github.com/PhoenixStarYT/dotfiles-openbox-koenos ~/dotfiles-openbox-koenos
+            mkdir -p ~/.config
+            cp -r ~/dotfiles-openbox-koenos/.config/* ~/.config/
             configure_desktop_environment 10
             ;;
         11)  # bspwm
