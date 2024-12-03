@@ -243,10 +243,6 @@ configure_desktop_environment() {
             echo "Installing bspwm..."
             sudo pacman -S --noconfirm bspwm picom variety thunar polybar
             
-            # Install FiraCode font
-            echo "Installing FiraCode font..."
-            sudo pacman -S --noconfirm ttf-firacode
-            
             # Prompt user to choose between dmenu and rofi
             echo "Choose your application launcher:"
             echo "1. dmenu"
