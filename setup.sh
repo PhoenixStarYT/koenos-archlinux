@@ -20,6 +20,35 @@ echo "
 
 "
 
+# Prompt user for experience level
+echo "Are you a beginner or an intermediate Linux user?"
+echo "1. Beginner"
+echo "2. Intermediate"
+read -rp "Enter your choice (1 or 2): " user_choice
+
+if [[ $user_choice -eq 1 ]]; then
+    # Clone and install Yay AUR helper
+    echo "Installing Yay AUR helper..."
+    git clone https://aur.archlinux.org/yay.git
+    cd yay || { echo "Failed to enter yay directory."; exit 1; }
+    makepkg -si --noconfirm || { echo "Failed to install Yay."; exit 1; }
+    cd ..  # Go back to the previous directory
+    rm -rf yay  # Clean up the cloned directory
+
+    # Install packages for beginners
+    echo "Installing beginner packages..."
+    yay -S --noconfirm onlyoffice-bin firefox nordic-theme mpv clementine spotify gnome-software cinnamon
+    # Set Nordic as the default theme in Cinnamon
+    gsettings set org.cinnamon.desktop.interface gtk-theme 'Nordic'
+    exit 0  # Exit after installing beginner packages
+elif [[ $user_choice -eq 2 ]]; then
+    # Skip installing beginner packages and proceed with the rest of the script
+    echo "Proceeding with the rest of the script..."
+else
+    echo "Invalid choice. Please run the script again and select a valid option."
+    exit 1
+fi
+
 # Define the list of AUR helpers
 AUR_HELPERS=("yay" "paru" "trizen" "aura" "pikaur")
 
@@ -267,6 +296,9 @@ configure_desktop_environment() {
                     ;;
             esac
             
+            # Ensure to break out of the loop after processing the choice
+            break  # Add this line to exit the loop
+            
             # Clone dotfiles for bspwm
             git clone https://github.com/PhoenixStarYT/dotfiles-bspwm-koenos ~/.config/bspwm
             cp -r ~/.config/bspwm/* ~/.config/
@@ -404,6 +436,9 @@ install_desktop_environment() {
                     echo "Invalid choice. Skipping installation of application launcher."
                     ;;
             esac
+            
+            # Ensure to break out of the loop after processing the choice
+            break  # Add this line to exit the loop
             
             # Clone dotfiles for bspwm
             git clone https://github.com/PhoenixStarYT/dotfiles-bspwm-koenos ~/.config/bspwm
@@ -606,6 +641,26 @@ detect_aur_helper() {
         exit 1
     fi
 }
+
+# Function to install packages for beginners
+install_beginners_packages() {
+    echo "Installing packages for beginners..."
+    # Install required packages using Yay
+    yay -S --noconfirm onlyoffice firefox nordic-theme mpv clementine spotify gnome-software
+    # Set Nordic as the default theme
+    gsettings set org.gnome.desktop.interface gtk-theme 'Nordic'
+}
+
+# Prompt user for experience level
+echo "Are you a beginner or an intermediate Linux user?"
+echo "1. Beginner"
+echo "2. Intermediate"
+read -rp "Enter your choice (1 or 2): " user_choice
+
+if [[ $user_choice -eq 1 ]]; then
+    install_beginners_packages
+    exit 0  # Exit after installing beginner packages
+fi
 
 # Choose and install the desktop environment
 PS3='Please enter your choice: '
@@ -874,20 +929,19 @@ install_networking_tools
 echo "
 
 ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
-██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝███╗  ████║
+██╔════╝╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔════╝████╗ ████║
 ███████╗ ╚████╔╝ ███████╗   ██║   █████╗  ██╔████╔██║
-╚════██║  ╚██╔╝  =════██║   ██║   ██╔══╝  ██║╚██╔╝██║
+╚════██║  ╚██╔╝  ╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║
 ███████║   ██║   ███████║   ██║   ███████╗██║ ╚═╝ ██║
 ╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
                                                      
-██████╗ ███████╗ █████╗ ██████╗  ██╗   ██╗            
-██╔══██╗██╔════╝█╔══██╗██╔══██╗ ╚██╗  ██╔╝            
+██████╗ ███████╗ █████╗ ██████╗ ██╗   ██╗            
+██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝            
 ██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝             
 ██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝              
 ██║  ██║███████╗██║  ██║██████╔╝   ██║               
-╚═╝  ╚═╝╚═════╝╚═  ╚═╝╚═════╝    ╚═╝               
-                                                     
-
+╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝               
+                                                    
 "
 
 GREEN="\e[32m"
