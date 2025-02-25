@@ -349,6 +349,60 @@ configure_kitty_as_default() {
 
 # Function to install the chosen desktop environment
 install_desktop_environment() {
+    # Prompt user to choose a terminal
+    echo "Choose a terminal to install:"
+    echo "1. Konsole"
+    echo "2. GNOME Terminal"
+    echo "3. XFCE Terminal"
+    echo "4. Cool Retro Term"
+    echo "5. LXTerminal"
+    echo "6. Alacritty"
+    echo "7. Kitty"
+    read -rp "Enter the number of the terminal you want to install: " terminal_choice
+
+    case $terminal_choice in
+        1)
+            echo "Installing Konsole..."
+            sudo pacman -S --noconfirm konsole
+            TERMINAL="konsole"
+            ;;
+        2)
+            echo "Installing GNOME Terminal..."
+            sudo pacman -S --noconfirm gnome-terminal
+            TERMINAL="gnome-terminal"
+            ;;
+        3)
+            echo "Installing XFCE Terminal..."
+            sudo pacman -S --noconfirm xfce4-terminal
+            TERMINAL="xfce4-terminal"
+            ;;
+        4)
+            echo "Installing Cool Retro Term..."
+            sudo pacman -S --noconfirm cool-retro-term
+            TERMINAL="cool-retro-term"
+            ;;
+        5)
+            echo "Installing LXTerminal..."
+            sudo pacman -S --noconfirm lxterminal
+            TERMINAL="lxterminal"
+            ;;
+        6)
+            echo "Installing Alacritty..."
+            sudo pacman -S --noconfirm alacritty
+            TERMINAL="alacritty"
+            ;;
+        7)
+            echo "Installing Kitty..."
+            sudo pacman -S --noconfirm kitty
+            TERMINAL="kitty"
+            ;;
+        *)
+            echo "Invalid choice. Skipping terminal installation."
+            TERMINAL=""
+            ;;
+    esac
+
+    # Proceed with the installation of the desktop environment
     case $1 in
         1)  # GNOME
             echo "Installing GNOME..."
@@ -446,8 +500,8 @@ install_desktop_environment() {
             ;;
     esac
 
-    # Call the function to choose the display manager
-    choose_display_manager
+    # Set the chosen terminal as the default
+    configure_kitty_as_default
 }
 
 # Function to choose and install the display manager
