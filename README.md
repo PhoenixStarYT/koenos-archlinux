@@ -1,1 +1,1 @@
-# Arch Post-Install script
+# Arch Linux Install script
