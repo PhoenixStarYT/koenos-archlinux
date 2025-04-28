@@ -95,69 +95,69 @@ configure_desktop_environment() {
     # Ensure git is installed
     if ! command -v git &> /dev/null; then
         echo "Git is not installed. Installing git..."
-        sudo pacman -S --noconfirm git
+        sudo pacman -S --noconfirm git || { echo "Failed to install git."; exit 1; }
     fi
 
     # Create wallpaper directory if it doesn't exist
-    mkdir -p ~/.wallpaper
+    mkdir -p ~/.wallpaper || { echo "Failed to create wallpaper directory."; exit 1; }
 
     # Clone wallpapers if not already cloned
     if [ ! -d ~/.wallpaper/koenos-wallpapers ]; then
-        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper
+        git clone https://github.com/phoenixstaryt/koenos-wallpapers ~/.wallpaper || { echo "Failed to clone wallpapers."; exit 1; }
     else
         echo "Wallpapers already cloned, skipping..."
     fi
 
     # Clone Nord background
     if [ ! -d ~/.wallpaper/nord-background ]; then
-        git clone https://github.com/ChrisTitusTech/nord-background ~/.wallpaper
+        git clone https://github.com/ChrisTitusTech/nord-background ~/.wallpaper || { echo "Failed to clone Nord background."; exit 1; }
     else
         echo "Nord background already cloned, skipping..."
     fi
 
     # Install Firacode Nerd Fonts
-    sudo pacman -S --noconfirm ttf-firacode-nerd
+    sudo pacman -S --noconfirm ttf-firacode-nerd || { echo "Failed to install Firacode Nerd Fonts."; exit 1; }
 
     # Clone Tela Circle Icons
-    mkdir -p ~/.icons
-    git clone https://github.com/vinceliuice/Tela-circle-icon-theme ~/.icons/Tela-circle
+    mkdir -p ~/.icons || { echo "Failed to create icons directory."; exit 1; }
+    git clone https://github.com/vinceliuice/Tela-circle-icon-theme ~/.icons/Tela-circle || { echo "Failed to clone Tela Circle Icons."; exit 1; }
 
     # Clone Nordic theme
-    mkdir -p ~/.themes
-    git clone https://github.com/EliverLara/Nordic ~/.themes/Nordic
+    mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+    git clone https://github.com/EliverLara/Nordic ~/.themes/Nordic || { echo "Failed to clone Nordic theme."; exit 1; }
 
     # Install Layan Cursors
-    git clone https://github.com/vinceliuice/Layan-cursors ~/.icons/Layan-cursors
+    git clone https://github.com/vinceliuice/Layan-cursors ~/.icons/Layan-cursors || { echo "Failed to clone Layan Cursors."; exit 1; }
 
     # Install Breeze Cursors
-    sudo pacman -S --noconfirm breeze
+    sudo pacman -S --noconfirm breeze || { echo "Failed to install Breeze Cursors."; exit 1; }
 
     # Configure the desktop environment based on the user's choice
     case $1 in
         1)  # GNOME
             echo "Configuring GNOME..."
-            gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-            gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
-            gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
-            gsettings set org.gnome.desktop.interface cursor-theme 'breeze'
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark' || { echo "Failed to set GNOME theme."; exit 1; }
+            gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11' || { echo "Failed to set GNOME font."; exit 1; }
+            gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle' || { echo "Failed to set GNOME icon theme."; exit 1; }
+            gsettings set org.gnome.desktop.interface cursor-theme 'breeze' || { echo "Failed to set GNOME cursor theme."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         2)  # KDE Plasma
             echo "Configuring KDE Plasma..."
-            kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark'
-            kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0'
-            kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle'
-            kwriteconfig5 --file kdeglobals --group Cursors --key Theme 'breeze'
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            kwriteconfig5 --file kdeglobals --group General --key ColorScheme 'BreezeDark' || { echo "Failed to set KDE color scheme."; exit 1; }
+            kwriteconfig5 --file kdeglobals --group General --key font 'FiraCode Nerd Font,11,-1,5,50,0,0,0,0,0' || { echo "Failed to set KDE font."; exit 1; }
+            kwriteconfig5 --file kdeglobals --group Icons --key Theme 'Tela-circle' || { echo "Failed to set KDE icon theme."; exit 1; }
+            kwriteconfig5 --file kdeglobals --group Cursors --key Theme 'breeze' || { echo "Failed to set KDE cursor theme."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
 
             # Ensure qdbus is available
             if ! command -v qdbus &> /dev/null; then
                 echo "qdbus could not be found, installing qt5-tools..."
-                sudo pacman -S --noconfirm qt5-tools
+                sudo pacman -S --noconfirm qt5-tools || { echo "Failed to install qt5-tools."; exit 1; }
             fi
 
             # Add widgets to KDE Plasma desktop
@@ -170,107 +170,107 @@ configure_desktop_environment() {
             desktop.addWidget("org.kde.plasma.systemmonitor.cpu");
             desktop.addWidget("org.kde.plasma.systemmonitor.memory");
             desktop.addWidget("org.kde.plasma.systemmonitor.network");
-            '
+            ' || { echo "Failed to add KDE widgets."; exit 1; }
             ;;
         3)  # XFCE
             echo "Configuring XFCE..."
-            xfconf-query -c xsettings -p /Net/ThemeName -s 'Nordic'
-            xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-circle'
-            xfconf-query -c xsettings -p /Net/CursorThemeName -s 'breeze'
-            xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11'
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            xfconf-query -c xsettings -p /Net/ThemeName -s 'Nordic' || { echo "Failed to set XFCE theme."; exit 1; }
+            xfconf-query -c xsettings -p /Net/IconThemeName -s 'Tela-circle' || { echo "Failed to set XFCE icon theme."; exit 1; }
+            xfconf-query -c xsettings -p /Net/CursorThemeName -s 'breeze' || { echo "Failed to set XFCE cursor theme."; exit 1; }
+            xfconf-query -c xsettings -p /Gtk/FontName -s 'FiraCode Nerd Font 11' || { echo "Failed to set XFCE font."; exit 1; }
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         4)  # Cinnamon
             echo "Configuring Cinnamon..."
-            gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
-            gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11'
-            gsettings set org.cinnamon.desktop.interface icon-theme 'Tela-circle'
-            gsettings set org.cinnamon.desktop.interface cursor-theme 'breeze'
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark' || { echo "Failed to set Cinnamon theme."; exit 1; }
+            gsettings set org.cinnamon.desktop.interface font-name 'FiraCode Nerd Font 11' || { echo "Failed to set Cinnamon font."; exit 1; }
+            gsettings set org.cinnamon.desktop.interface icon-theme 'Tela-circle' || { echo "Failed to set Cinnamon icon theme."; exit 1; }
+            gsettings set org.cinnamon.desktop.interface cursor-theme 'breeze' || { echo "Failed to set Cinnamon cursor theme."; exit 1; }
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         5)  # MATE
             echo "Configuring MATE..."
-            gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark'
-            gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11'
-            gsettings set org.mate.interface icon-theme 'Tela-circle'
-            gsettings set org.mate.interface cursor-theme 'breeze'
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            gsettings set org.mate.interface gtk-theme 'Ambiant-MATE-Dark' || { echo "Failed to set MATE theme."; exit 1; }
+            gsettings set org.mate.interface font-name 'FiraCode Nerd Font 11' || { echo "Failed to set MATE font."; exit 1; }
+            gsettings set org.mate.interface icon-theme 'Tela-circle' || { echo "Failed to set MATE icon theme."; exit 1; }
+            gsettings set org.mate.interface cursor-theme 'breeze' || { echo "Failed to set MATE cursor theme."; exit 1; }
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         6)  # LXDE
             echo "Configuring LXDE..."
-            sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf
-            echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf
-            echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxsession/LXDE/desktop.conf
-            echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxsession/LXDE/desktop.conf
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            sed -i 's/window_manager=.*/window_manager=openbox/' ~/.config/lxsession/LXDE/desktop.conf || { echo "Failed to set LXDE window manager."; exit 1; }
+            echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxsession/LXDE/desktop.conf || { echo "Failed to set LXDE font."; exit 1; }
+            echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxsession/LXDE/desktop.conf || { echo "Failed to set LXDE icon theme."; exit 1; }
+            echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxsession/LXDE/desktop.conf || { echo "Failed to set LXDE cursor theme."; exit 1; }
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         7)  # LXQt
             echo "Configuring LXQt..."
-            lxqt-config-appearance --set-widget-style Fusion
-            echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf
-            echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxqt/session.conf
-            echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxqt/session.conf
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            lxqt-config-appearance --set-widget-style Fusion || { echo "Failed to set LXQt widget style."; exit 1; }
+            echo 'xft: FiraCode Nerd Font 11' >> ~/.config/lxqt/session.conf || { echo "Failed to set LXQt font."; exit 1; }
+            echo 'sNet/IconThemeName=Tela-circle' >> ~/.config/lxqt/session.conf || { echo "Failed to set LXQt icon theme."; exit 1; }
+            echo 'sNet/CursorThemeName=breeze' >> ~/.config/lxqt/session.conf || { echo "Failed to set LXQt cursor theme."; exit 1; }
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         8)  # Budgie
             echo "Configuring Budgie..."
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-            gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle'
-            gsettings set org.gnome.desktop.interface cursor-theme 'breeze'
-            gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark'
-            gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11'
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config
-            systemctl enable sddm
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark' || { echo "Failed to set Budgie theme."; exit 1; }
+            gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle' || { echo "Failed to set Budgie icon theme."; exit 1; }
+            gsettings set org.gnome.desktop.interface cursor-theme 'breeze' || { echo "Failed to set Budgie cursor theme."; exit 1; }
+            gsettings set org.gnome.desktop.wm.preferences theme 'Adwaita-dark' || { echo "Failed to set Budgie WM theme."; exit 1; }
+            gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 11' || { echo "Failed to set Budgie font."; exit 1; }
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3/* ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         9)  # i3wm
             echo "Configuring i3wm"
-            mkdir -p ~/.config
-            cp -r ~/koenos-archlinux/dotconfig-i3 ~/.config
-            mkdir -p ~/.themes
-            cp -r ~/koenos-archlinux/themes/* ~/.themes
-            echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config
-            echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config
-            echo 'set_from_resource $theme Nordic' >> ~/.config/i3/config
-            echo 'xsetroot -cursor_name breeze' >> ~/.config/i3/config
+            mkdir -p ~/.config || { echo "Failed to create config directory."; exit 1; }
+            cp -r ~/koenos-archlinux/dotconfig-i3 ~/.config || { echo "Failed to copy i3 config."; exit 1; }
+            mkdir -p ~/.themes || { echo "Failed to create themes directory."; exit 1; }
+            cp -r ~/koenos-archlinux/themes/* ~/.themes || { echo "Failed to copy themes."; exit 1; }
+            echo 'font pango:FiraCode Nerd Font 11' >> ~/.config/i3/config || { echo "Failed to set i3 font."; exit 1; }
+            echo 'bindsym $mod+Shift+i exec "feh --bg-scale ~/.wallpaper/your_wallpaper.jpg"' >> ~/.config/i3/config || { echo "Failed to set i3 wallpaper binding."; exit 1; }
+            echo 'set_from_resource $theme Nordic' >> ~/.config/i3/config || { echo "Failed to set i3 theme."; exit 1; }
+            echo 'xsetroot -cursor_name breeze' >> ~/.config/i3/config || { echo "Failed to set i3 cursor."; exit 1; }
             # Set pcmanfm as the default file manager
-            echo 'bindsym $mod+e exec pcmanfm' >> ~/.config/i3/config
-            systemctl enable sddm
+            echo 'bindsym $mod+e exec pcmanfm' >> ~/.config/i3/config || { echo "Failed to set i3 file manager."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         10)  # openbox
             echo "Configuring openbox..."
-            git clone https://github.com/PhoenixStarYT/dotfiles-openbox-koenos ~
-            echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml
-            echo 'xsetroot -cursor_name breeze' >> ~/.config/openbox/rc.xml
+            git clone https://github.com/PhoenixStarYT/dotfiles-openbox-koenos ~ || { echo "Failed to clone openbox config."; exit 1; }
+            echo 'theme = "Nordic"' >> ~/.config/openbox/rc.xml || { echo "Failed to set openbox theme."; exit 1; }
+            echo 'xsetroot -cursor_name breeze' >> ~/.config/openbox/rc.xml || { echo "Failed to set openbox cursor."; exit 1; }
             # Set pcmanfm as the default file manager
-            echo 'pcmanfm & disown' >> ~/.config/openbox/autostart
-            systemctl enable sddm
+            echo 'pcmanfm & disown' >> ~/.config/openbox/autostart || { echo "Failed to set openbox file manager."; exit 1; }
+            systemctl enable sddm || { echo "Failed to enable SDDM."; exit 1; }
             ;;
         11)  # bspwm
             echo "Installing bspwm..."
-            sudo pacman -S --noconfirm bspwm picom variety thunar polybar
+            sudo pacman -S --noconfirm bspwm picom variety thunar polybar || { echo "Failed to install bspwm packages."; exit 1; }
             
             # Prompt user to choose between dmenu and rofi
             echo "Choose your application launcher:"
@@ -281,27 +281,24 @@ configure_desktop_environment() {
             case $launcher_choice in
                 1)
                     echo "Installing dmenu..."
-                    sudo pacman -S --noconfirm dmenu
+                    sudo pacman -S --noconfirm dmenu || { echo "Failed to install dmenu."; exit 1; }
                     ;;
                 2)
                     echo "Installing rofi..."
-                    sudo pacman -S --noconfirm rofi
+                    sudo pacman -S --noconfirm rofi || { echo "Failed to install rofi."; exit 1; }
                     ;;
                 *)
                     echo "Invalid choice. Skipping installation of application launcher."
                     ;;
             esac
             
-            # Ensure to break out of the loop after processing the choice
-            break  # Add this line to exit the loop
-            
             # Clone dotfiles for bspwm
-            git clone https://github.com/PhoenixStarYT/dotfiles-bspwm-koenos ~/.config/bspwm
-            cp -r ~/.config/bspwm/* ~/.config/
-            configure_desktop_environment 11
+            git clone https://github.com/PhoenixStarYT/dotfiles-bspwm-koenos ~/.config/bspwm || { echo "Failed to clone bspwm config."; exit 1; }
+            cp -r ~/.config/bspwm/* ~/.config/ || { echo "Failed to copy bspwm config."; exit 1; }
             ;;
         *)
             echo "Invalid option"
+            exit 1
             ;;
     esac
 }
@@ -581,36 +578,73 @@ install_office_suite() {
     esac
 }
 
+# Function to check if a package is installed
+check_package() {
+    pacman -Qi "$1" &>/dev/null
+    return $?
+}
+
+# Function to install a package with error handling
+install_package() {
+    local package=$1
+    local source=$2  # 'pacman' or 'aur'
+    
+    if check_package "$package"; then
+        echo "$package is already installed."
+        return 0
+    fi
+    
+    echo "Installing $package..."
+    if [ "$source" = "pacman" ]; then
+        sudo pacman -S --noconfirm "$package" || { echo "Failed to install $package."; return 1; }
+    else
+        $AUR_HELPER -S --noconfirm "$package" || { echo "Failed to install $package from AUR."; return 1; }
+    fi
+}
+
 # Function to install Steam
 install_steam() {
     echo "Installing Steam..."
-    sudo pacman -S --noconfirm steam
+    install_package "steam" "pacman" || return 1
+    install_package "steam-native-runtime" "pacman" || return 1
+    install_package "lib32-vulkan-icd-loader" "pacman" || return 1
+    install_package "lib32-vulkan-intel" "pacman" || return 1
+    install_package "lib32-vulkan-radeon" "pacman" || return 1
 }
 
 # Function to install Lutris
 install_lutris() {
     echo "Installing Lutris..."
-    sudo pacman -S --noconfirm lutris
+    install_package "lutris" "pacman" || return 1
+    install_package "wine" "pacman" || return 1
+    install_package "winetricks" "pacman" || return 1
 }
 
 # Function to install Wine
 install_wine() {
     echo "Installing Wine..."
-    sudo pacman -S --noconfirm wine
+    install_package "wine" "pacman" || return 1
+    install_package "winetricks" "pacman" || return 1
+    install_package "wine-mono" "pacman" || return 1
+    install_package "wine-gecko" "pacman" || return 1
 }
 
 # Function to install Libretro
 install_libretro() {
     echo "Installing Libretro..."
-    sudo pacman -S --noconfirm libretro
+    install_package "libretro-core-info" "pacman" || return 1
+    install_package "libretro-common" "pacman" || return 1
+    install_package "libretro-beetle-psx" "pacman" || return 1
+    install_package "libretro-snes9x" "pacman" || return 1
+    install_package "libretro-mgba" "pacman" || return 1
 }
 
 # Function to install Minecraft
 install_minecraft() {
     echo "Installing Minecraft..."
-    sudo pacman -S --noconfirm jdk-openjdk
-    $AUR_HELPER -S --noconfirm minecraft-launcher
-    $AUR_HELPER -S --noconfirm multimc-bin
+    install_package "jdk-openjdk" "pacman" || return 1
+    install_package "minecraft-launcher" "aur" || return 1
+    install_package "multimc-bin" "aur" || return 1
 }
 
 # Function to install gaming-related software
@@ -622,31 +656,31 @@ install_gaming_software() {
         select opt in "${options[@]}"; do
             case $opt in
                 "Steam")
-                    install_steam
+                    install_steam || { echo "Failed to install Steam."; return 1; }
                     break
                     ;;
                 "Lutris")
-                    install_lutris
+                    install_lutris || { echo "Failed to install Lutris."; return 1; }
                     break
                     ;;
                 "Wine")
-                    install_wine
+                    install_wine || { echo "Failed to install Wine."; return 1; }
                     break
                     ;;
                 "Libretro")
-                    install_libretro
+                    install_libretro || { echo "Failed to install Libretro."; return 1; }
                     break
                     ;;
                 "Minecraft")
-                    install_minecraft
+                    install_minecraft || { echo "Failed to install Minecraft."; return 1; }
                     break
                     ;;
                 "All")
-                    install_steam
-                    install_lutris
-                    install_wine
-                    install_libretro
-                    install_minecraft
+                    install_steam || { echo "Failed to install Steam."; return 1; }
+                    install_lutris || { echo "Failed to install Lutris."; return 1; }
+                    install_wine || { echo "Failed to install Wine."; return 1; }
+                    install_libretro || { echo "Failed to install Libretro."; return 1; }
+                    install_minecraft || { echo "Failed to install Minecraft."; return 1; }
                     break
                     ;;
                 "None")
@@ -668,7 +702,10 @@ install_multimedia_tools() {
     read -p "Do you want to install multimedia tools (mpv, Clementine, Kodi)? (y/n): " answer
     if [[ $answer =~ ^[Yy]$ ]]; then
         echo "Installing multimedia tools..."
-        sudo pacman -S --noconfirm mpv clementine kodi
+        install_package "mpv" "pacman" || { echo "Failed to install mpv."; return 1; }
+        install_package "clementine" "pacman" || { echo "Failed to install Clementine."; return 1; }
+        install_package "kodi" "pacman" || { echo "Failed to install Kodi."; return 1; }
+        install_package "kodi-addons" "pacman" || { echo "Failed to install Kodi addons."; return 1; }
     else
         echo "Skipping installation of multimedia tools."
     fi
@@ -841,53 +878,58 @@ set_default_browser() {
 
     # For GNOME-based environments
     if command -v gsettings &> /dev/null; then
-        gsettings set org.gnome.system.proxy mode 'none'
-        gsettings set org.gnome.system.proxy.http host ''
-        gsettings set org.gnome.system.proxy.http port 0
-        gsettings set org.gnome.system.proxy.https host ''
-        gsettings set org.gnome.system.proxy.https port 0
-        gsettings set org.gnome.system.proxy.ftp host ''
-        gsettings set org.gnome.system.proxy.ftp port 0
-        gsettings set org.gnome.system.proxy.socks host ''
-        gsettings set org.gnome.system.proxy.socks port 0
-        gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1']"
-        gsettings set org.gnome.desktop.default-applications.browser exec "$BROWSER"
-        gsettings set org.gnome.desktop.default-applications.browser exec-arg ""
+        gsettings set org.gnome.system.proxy mode 'none' || { echo "Failed to set GNOME proxy mode."; exit 1; }
+        gsettings set org.gnome.system.proxy.http host '' || { echo "Failed to set GNOME HTTP proxy."; exit 1; }
+        gsettings set org.gnome.system.proxy.http port 0 || { echo "Failed to set GNOME HTTP proxy port."; exit 1; }
+        gsettings set org.gnome.system.proxy.https host '' || { echo "Failed to set GNOME HTTPS proxy."; exit 1; }
+        gsettings set org.gnome.system.proxy.https port 0 || { echo "Failed to set GNOME HTTPS proxy port."; exit 1; }
+        gsettings set org.gnome.system.proxy.ftp host '' || { echo "Failed to set GNOME FTP proxy."; exit 1; }
+        gsettings set org.gnome.system.proxy.ftp port 0 || { echo "Failed to set GNOME FTP proxy port."; exit 1; }
+        gsettings set org.gnome.system.proxy.socks host '' || { echo "Failed to set GNOME SOCKS proxy."; exit 1; }
+        gsettings set org.gnome.system.proxy.socks port 0 || { echo "Failed to set GNOME SOCKS proxy port."; exit 1; }
+        gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '::1']" || { echo "Failed to set GNOME proxy ignore hosts."; exit 1; }
+        gsettings set org.gnome.desktop.default-applications.browser exec "$BROWSER" || { echo "Failed to set GNOME default browser."; exit 1; }
+        gsettings set org.gnome.desktop.default-applications.browser exec-arg "" || { echo "Failed to set GNOME browser arguments."; exit 1; }
     fi
 
     # For KDE-based environments
     if command -v update-alternatives &> /dev/null; then
-        sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/$BROWSER 200
-        sudo update-alternatives --set x-www-browser /usr/bin/$BROWSER
+        sudo update-alternatives --install /usr/bin/x-www-browser x-www-browser "/usr/bin/$BROWSER" 200 || { echo "Failed to install browser alternative."; exit 1; }
+        sudo update-alternatives --set x-www-browser "/usr/bin/$BROWSER" || { echo "Failed to set browser alternative."; exit 1; }
     fi
 
     # For XFCE
     if command -v xfconf-query &> /dev/null; then
-        xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -s $BROWSER -a
+        xfconf-query -c xfce4-session -p /sessions/Failsafe/Client0_Command -t string -s "$BROWSER" -a || { echo "Failed to set XFCE default browser."; exit 1; }
     fi
 
     # For other environments (LXDE, LXQt, etc.)
     if [ -f ~/.config/lxsession/LXDE/autostart ]; then
-        echo "@$BROWSER" >> ~/.config/lxsession/LXDE/autostart
+        echo "@$BROWSER" >> ~/.config/lxsession/LXDE/autostart || { echo "Failed to set LXDE default browser."; exit 1; }
     fi
 
     # For i3
     if [ -d ~/.config/i3 ]; then
-        echo 'bindsym $mod+Shift+b exec $BROWSER' >> ~/.config/i3/config
+        echo "bindsym \$mod+Shift+b exec $BROWSER" >> ~/.config/i3/config || { echo "Failed to set i3 browser shortcut."; exit 1; }
     fi
 
     # For bspwm
     if [ -d ~/.config/bspwm ]; then
-        echo 'super + b
-	$BROWSER' >> ~/.config/sxhkd/sxhkdrc
+        echo "super + b
+	$BROWSER" >> ~/.config/sxhkd/sxhkdrc || { echo "Failed to set bspwm browser shortcut."; exit 1; }
     fi
 
     # For Openbox
     if [ -d ~/.config/openbox ]; then
         if [ ! -f ~/.config/openbox/autostart ]; then
-            touch ~/.config/openbox/autostart
+            touch ~/.config/openbox/autostart || { echo "Failed to create Openbox autostart file."; exit 1; }
         fi
-        echo '$BROWSER & disown' >> ~/.config/openbox/autostart
+        echo "$BROWSER & disown" >> ~/.config/openbox/autostart || { echo "Failed to set Openbox default browser."; exit 1; }
+    fi
+
+    # Set default browser using xdg-utils
+    if command -v xdg-settings &> /dev/null; then
+        xdg-settings set default-web-browser "$BROWSER.desktop" || { echo "Failed to set system-wide default browser."; exit 1; }
     fi
 }
 
@@ -940,7 +982,92 @@ install_starship
 # Function to install development tools
 install_development_tools() {
     echo "Installing development tools..."
-    sudo pacman -S --noconfirm git vim code docker nodejs npm python python-pip
+    
+    # Core development tools
+    local dev_packages=(
+        "git"
+        "vim"
+        "code"
+        "docker"
+        "nodejs"
+        "npm"
+        "python"
+        "python-pip"
+        "base-devel"
+        "cmake"
+        "gcc"
+        "make"
+        "pkg-config"
+    )
+    
+    for package in "${dev_packages[@]}"; do
+        install_package "$package" "pacman" || { echo "Failed to install $package."; return 1; }
+    done
+    
+    # Install Docker service
+    if ! systemctl is-active --quiet docker; then
+        sudo systemctl enable docker || { echo "Failed to enable Docker service."; return 1; }
+        sudo systemctl start docker || { echo "Failed to start Docker service."; return 1; }
+        sudo usermod -aG docker "$USER" || { echo "Failed to add user to docker group."; return 1; }
+    fi
+    
+    # Install VS Code extensions
+    if command -v code &> /dev/null; then
+        local vscode_extensions=(
+            "ms-python.python"
+            "ms-vscode.cpptools"
+            "dbaeumer.vscode-eslint"
+            "esbenp.prettier-vscode"
+            "ms-azuretools.vscode-docker"
+            "golang.go"
+            "rust-lang.rust"
+        )
+        
+        for extension in "${vscode_extensions[@]}"; do
+            code --install-extension "$extension" || { echo "Failed to install VS Code extension: $extension"; }
+        done
+    fi
+    
+    # Configure Git
+    if ! git config --global user.name &> /dev/null; then
+        read -rp "Enter your Git username: " git_username
+        git config --global user.name "$git_username" || { echo "Failed to set Git username."; return 1; }
+    fi
+    
+    if ! git config --global user.email &> /dev/null; then
+        read -rp "Enter your Git email: " git_email
+        git config --global user.email "$git_email" || { echo "Failed to set Git email."; return 1; }
+    fi
+    
+    # Install Python packages
+    local python_packages=(
+        "pytest"
+        "black"
+        "flake8"
+        "mypy"
+        "isort"
+        "pipenv"
+        "poetry"
+    )
+    
+    for package in "${python_packages[@]}"; do
+        pip install --user "$package" || { echo "Failed to install Python package: $package"; }
+    done
+    
+    # Install Node.js packages
+    local node_packages=(
+        "typescript"
+        "eslint"
+        "prettier"
+        "nodemon"
+        "yarn"
+    )
+    
+    for package in "${node_packages[@]}"; do
+        npm install -g "$package" || { echo "Failed to install Node.js package: $package"; }
+    done
+    
+    echo "Development tools installation completed."
 }
 
 # Function to install utilities
@@ -960,7 +1087,173 @@ install_media_tools() {
 # Function to install productivity tools
 install_productivity_tools() {
     echo "Installing productivity tools..."
-    sudo pacman -S --noconfirm thunderbird keepassxc syncthing
+    
+    # Define arrays for different categories of productivity tools
+    local communication_tools=(
+        "thunderbird"
+        "signal-desktop"
+        "slack-desktop"
+        "discord"
+    )
+    
+    local security_tools=(
+        "keepassxc"
+        "gnupg"
+        "yubikey-manager"
+        "pass"
+    )
+    
+    local sync_tools=(
+        "syncthing"
+        "nextcloud-client"
+        "rclone"
+    )
+    
+    local note_tools=(
+        "obsidian"
+        "joplin-desktop"
+        "xournalpp"
+    )
+    
+    local time_tools=(
+        "gnome-pomodoro"
+        "todoist"
+        "calendar-cli"
+    )
+
+    # Check for dependencies
+    local dependencies=(
+        "base-devel"
+        "git"
+        "curl"
+        "wget"
+    )
+
+    echo "Checking and installing dependencies..."
+    for dep in "${dependencies[@]}"; do
+        if ! pacman -Qi "$dep" &>/dev/null; then
+            echo "Installing dependency: $dep"
+            sudo pacman -S --noconfirm "$dep" || { echo "Failed to install dependency: $dep"; return 1; }
+        fi
+    done
+
+    # Function to install packages with error handling
+    install_package_with_retry() {
+        local package=$1
+        local source=$2
+        local max_retries=3
+        local retry_count=0
+
+        while [ $retry_count -lt $max_retries ]; do
+            echo "Installing $package (attempt $((retry_count + 1))/$max_retries)..."
+            
+            if [ "$source" = "pacman" ]; then
+                if sudo pacman -S --noconfirm "$package"; then
+                    echo "$package installed successfully"
+                    return 0
+                fi
+            elif [ "$source" = "aur" ]; then
+                if $AUR_HELPER -S --noconfirm "$package"; then
+                    echo "$package installed successfully"
+                    return 0
+                fi
+            fi
+            
+            retry_count=$((retry_count + 1))
+            if [ $retry_count -lt $max_retries ]; then
+                echo "Retrying installation of $package in 5 seconds..."
+                sleep 5
+            fi
+        done
+        
+        echo "Failed to install $package after $max_retries attempts"
+        return 1
+    }
+
+    # Install communication tools
+    echo "Installing communication tools..."
+    for tool in "${communication_tools[@]}"; do
+        case $tool in
+            "signal-desktop"|"slack-desktop"|"discord")
+                install_package_with_retry "$tool" "aur" || continue
+                ;;
+            *)
+                install_package_with_retry "$tool" "pacman" || continue
+                ;;
+        esac
+    done
+
+    # Install security tools
+    echo "Installing security tools..."
+    for tool in "${security_tools[@]}"; do
+        install_package_with_retry "$tool" "pacman" || continue
+    done
+
+    # Install sync tools
+    echo "Installing sync tools..."
+    for tool in "${sync_tools[@]}"; do
+        install_package_with_retry "$tool" "pacman" || continue
+    done
+
+    # Install note-taking tools
+    echo "Installing note-taking tools..."
+    for tool in "${note_tools[@]}"; do
+        case $tool in
+            "obsidian"|"joplin-desktop")
+                install_package_with_retry "$tool" "aur" || continue
+                ;;
+            *)
+                install_package_with_retry "$tool" "pacman" || continue
+                ;;
+        esac
+    done
+
+    # Install time management tools
+    echo "Installing time management tools..."
+    for tool in "${time_tools[@]}"; do
+        case $tool in
+            "todoist")
+                install_package_with_retry "$tool" "aur" || continue
+                ;;
+            *)
+                install_package_with_retry "$tool" "pacman" || continue
+                ;;
+        esac
+    done
+
+    # Configure Syncthing
+    if pacman -Qi "syncthing" &>/dev/null; then
+        echo "Configuring Syncthing..."
+        systemctl --user enable syncthing.service || echo "Failed to enable Syncthing service"
+        systemctl --user start syncthing.service || echo "Failed to start Syncthing service"
+    fi
+
+    # Configure GPG
+    if pacman -Qi "gnupg" &>/dev/null; then
+        echo "Configuring GPG..."
+        mkdir -p ~/.gnupg
+        chmod 700 ~/.gnupg
+        echo "default-cache-ttl 3600" > ~/.gnupg/gpg-agent.conf
+        echo "max-cache-ttl 7200" >> ~/.gnupg/gpg-agent.conf
+        gpg-connect-agent reloadagent /bye
+    fi
+
+    # Configure KeePassXC browser integration
+    if pacman -Qi "keepassxc" &>/dev/null; then
+        echo "Configuring KeePassXC browser integration..."
+        mkdir -p ~/.config/keepassxc
+        cat > ~/.config/keepassxc/keepassxc.ini <<EOL
+[Browser]
+Enabled=true
+AlwaysAllowAccess=false
+CustomProxyLocation=
+ShowNotifications=true
+UpdateBinaryPath=true
+EOL
+    fi
+
+    echo "Productivity tools installation completed."
+    echo "Note: Some tools may require additional configuration. Please check their documentation."
 }
 
 # Function to install networking tools
@@ -975,6 +1268,41 @@ install_utilities
 install_media_tools
 install_productivity_tools
 install_networking_tools
+
+# --- VM Resolution Script Generation ---
+if systemd-detect-virt --quiet; then
+    echo "Detected Virtual Machine. Setting up 1920x1080 resolution script for startup."
+    mkdir -p ~/.config
+    cat > ~/.config/set-vm-resolution.sh <<'EOF'
+#!/bin/bash
+# Set display to 1920x1080 if possible
+export DISPLAY=:0
+xrandr --output $(xrandr | awk '/ connected/ {print $1; exit}') --mode 1920x1080
+EOF
+    chmod +x ~/.config/set-vm-resolution.sh
+    # Add to .xprofile for most DEs
+    if ! grep -q 'set-vm-resolution.sh' ~/.xprofile 2>/dev/null; then
+        echo '~/.config/set-vm-resolution.sh' >> ~/.xprofile
+    fi
+    # Add to LXDE autostart if present
+    if [ -f ~/.config/lxsession/LXDE/autostart ] && ! grep -q 'set-vm-resolution.sh' ~/.config/lxsession/LXDE/autostart; then
+        echo '@~/.config/set-vm-resolution.sh' >> ~/.config/lxsession/LXDE/autostart
+    fi
+    # Add to XFCE autostart if present
+    if [ -d ~/.config/autostart ]; then
+        cat > ~/.config/autostart/set-vm-resolution.desktop <<EOL
+[Desktop Entry]
+Type=Application
+Exec=/home/$USER/.config/set-vm-resolution.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Set VM Resolution
+Comment=Set screen resolution to 1920x1080 in VM
+EOL
+    fi
+fi
+# --- End VM Resolution Script Generation ---
 
 echo "
 
