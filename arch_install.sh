@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Global variable to store the selected AUR helper
+AUR_HELPER=""
+
 # Function to display a welcome message with ASCII art
 show_welcome() {
     clear
@@ -69,9 +72,48 @@ format_and_mount() {
     mount "${DRIVE}1" /mnt/boot/efi
 }
 
+# Function to make drive bootable
+make_bootable() {
+    echo "Setting up bootloader..."
+    
+    # Install bootloader and related packages
+    pacstrap /mnt grub efibootmgr os-prober
+    
+    # Generate fstab
+    genfstab -U /mnt >> /mnt/etc/fstab
+    
+    # Install GRUB
+    arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+    
+    # Configure GRUB
+    arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+    
+    # Enable os-prober if it exists
+    if [ -f /mnt/etc/default/grub ]; then
+        sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /mnt/etc/default/grub
+        arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+    fi
+    
+    echo "Bootloader setup complete."
+}
+
 # Function to enable multilib
 enable_multilib() {
-    sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
+    # Check if multilib is already enabled
+    if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
+        echo "Enabling multilib repository..."
+        # Add multilib section if it doesn't exist
+        echo "[multilib]" >> /etc/pacman.conf
+        echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+    elif grep -q "^#\[multilib\]" /etc/pacman.conf; then
+        echo "Enabling multilib repository..."
+        # Uncomment multilib section if it's commented out
+        sed -i '/\[multilib\]/,/Include/s/^#//' /etc/pacman.conf
+    else
+        echo "Multilib repository is already enabled."
+    fi
+    
+    # Sync repositories
     pacman -Sy
 }
 
@@ -129,22 +171,27 @@ install_aur_helper() {
     
     case $aur_choice in
         1)
+            AUR_HELPER="yay"
             pacstrap /mnt git base-devel
             arch-chroot /mnt bash -c "cd /tmp && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm"
             ;;
         2)
+            AUR_HELPER="paru"
             pacstrap /mnt git base-devel
             arch-chroot /mnt bash -c "cd /tmp && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm"
             ;;
         3)
+            AUR_HELPER="trizen"
             pacstrap /mnt git base-devel
             arch-chroot /mnt bash -c "cd /tmp && git clone https://aur.archlinux.org/trizen.git && cd trizen && makepkg -si --noconfirm"
             ;;
         4)
+            AUR_HELPER="pikaur"
             pacstrap /mnt git base-devel
             arch-chroot /mnt bash -c "cd /tmp && git clone https://aur.archlinux.org/pikaur.git && cd pikaur && makepkg -si --noconfirm"
             ;;
         5)
+            AUR_HELPER="aurman"
             pacstrap /mnt git base-devel
             arch-chroot /mnt bash -c "cd /tmp && git clone https://aur.archlinux.org/aurman.git && cd aurman && makepkg -si --noconfirm"
             ;;
@@ -153,6 +200,12 @@ install_aur_helper() {
             exit 1
             ;;
     esac
+}
+
+# Function to install AUR packages
+install_aur_package() {
+    local package=$1
+    arch-chroot /mnt bash -c "$AUR_HELPER -S --noconfirm $package"
 }
 
 # Function to install desktop environment
@@ -254,22 +307,22 @@ install_web_browser() {
             pacstrap /mnt qutebrowser
             ;;
         3)
-            arch-chroot /mnt bash -c "yay -S --noconfirm brave-bin"
+            pacstrap /mnt brave
             ;;
         4)
-            arch-chroot /mnt bash -c "yay -S --noconfirm thorium-browser-bin"
+            pacstrap /mnt thorium-browser
             ;;
         5)
-            arch-chroot /mnt bash -c "yay -S --noconfirm floorp"
+            pacstrap /mnt floorp
             ;;
         6)
-            arch-chroot /mnt bash -c "yay -S --noconfirm vivaldi"
+            pacstrap /mnt vivaldi
             ;;
         7)
-            arch-chroot /mnt bash -c "yay -S --noconfirm google-chrome"
+            pacstrap /mnt google-chrome
             ;;
         8)
-            arch-chroot /mnt bash -c "yay -S --noconfirm microsoft-edge-stable-bin"
+            pacstrap /mnt microsoft-edge-stable-bin
             ;;
         *)
             echo "Invalid choice"
@@ -293,13 +346,13 @@ install_office_suite() {
             pacstrap /mnt libreoffice-fresh
             ;;
         2)
-            arch-chroot /mnt bash -c "yay -S --noconfirm wps-office"
+            pacstrap /mnt wps-office
             ;;
         3)
-            arch-chroot /mnt bash -c "yay -S --noconfirm onlyoffice-bin"
+            pacstrap /mnt onlyoffice-bin
             ;;
         4)
-            arch-chroot /mnt bash -c "yay -S --noconfirm openoffice"
+            pacstrap /mnt openoffice
             ;;
         *)
             echo "Invalid choice"
@@ -321,7 +374,7 @@ install_gaming_software() {
     
     case $gaming_choice in
         1)
-            arch-chroot /mnt bash -c "yay -S --noconfirm lutris"
+            pacstrap /mnt lutris
             ;;
         2)
             pacstrap /mnt steam
@@ -333,8 +386,7 @@ install_gaming_software() {
             pacstrap /mnt wine winetricks
             ;;
         5)
-            arch-chroot /mnt bash -c "yay -S --noconfirm lutris"
-            pacstrap /mnt steam retroarch wine winetricks
+            pacstrap /mnt lutris steam retroarch wine winetricks
             ;;
         *)
             echo "Invalid choice"
@@ -393,19 +445,21 @@ install_multimedia() {
 
 # Function to install themes and utilities
 install_themes_and_utilities() {
-    # Install themes
-    pacstrap /mnt breeze-cursor-theme
-    arch-chroot /mnt bash -c "yay -S --noconfirm tela-circle-icon-theme nordic-theme"
+    # Install themes via git clone
+    mkdir -p /mnt/usr/share/themes
+    mkdir -p /mnt/usr/share/icons
+    mkdir -p /mnt/usr/share/backgrounds
+    
+    # Clone themes
+    arch-chroot /mnt bash -c "cd /usr/share/themes && git clone https://github.com/EliverLara/Nordic.git"
+    arch-chroot /mnt bash -c "cd /usr/share/icons && git clone https://github.com/vinceliuice/Tela-circle-icon-theme.git"
+    arch-chroot /mnt bash -c "cd /usr/share/backgrounds && git clone https://github.com/phoenixstaryt/koenos-wallpapers"
     
     # Install utilities
-    pacstrap /mnt pulseaudio pavucontrol networkmanager xarchiver zip unzip
+    pacstrap /mnt breeze-cursor-theme pulseaudio pavucontrol networkmanager xarchiver zip unzip
     
     # Install terminal applications
-    pacstrap /mnt vim ranger btop cava fastfetch starship
-    
-    # Install wallpapers
-    arch-chroot /mnt bash -c "cd /usr/share/backgrounds && git clone https://github.com/phoenixstaryt/koenos-wallpapers"
-    pacstrap /mnt variety
+    pacstrap /mnt vim ranger btop cava fastfetch starship variety
 }
 
 # Function to configure starship
@@ -418,6 +472,9 @@ main() {
     check_root
     show_welcome
     
+    # Enable multilib at the start
+    enable_multilib
+    
     echo "Choose installation type:"
     echo "1. Beginner (Complete Desktop)"
     echo "2. Intermediate (Custom Installation)"
@@ -428,10 +485,10 @@ main() {
         # Beginner installation
         list_drives
         format_and_mount
-        enable_multilib
         install_base
         install_graphics_drivers
         setup_vm_resolution
+        make_bootable
         
         # Install complete desktop
         pacstrap /mnt cinnamon firefox libreoffice-fresh steam vlc
@@ -445,10 +502,10 @@ main() {
         # Intermediate installation
         list_drives
         format_and_mount
-        enable_multilib
         install_base
         install_graphics_drivers
         setup_vm_resolution
+        make_bootable
         install_aur_helper
         install_desktop_environment
         install_web_browser
