@@ -208,6 +208,41 @@ install_aur_package() {
     arch-chroot /mnt bash -c "$AUR_HELPER -S --noconfirm $package"
 }
 
+# Function to select display manager
+select_display_manager() {
+    echo "Choose your display manager:"
+    echo "1. SDDM (Modern and feature-rich)"
+    echo "2. LightDM (Lightweight and flexible)"
+    echo "3. LXDM (Lightweight X11 Display Manager)"
+    echo "4. Entrance (Enlightenment Display Manager)"
+    
+    read -p "Enter your choice (1-4): " dm_choice
+    
+    case $dm_choice in
+        1)
+            pacstrap /mnt sddm
+            arch-chroot /mnt systemctl enable sddm
+            ;;
+        2)
+            pacstrap /mnt lightdm lightdm-gtk-greeter
+            arch-chroot /mnt systemctl enable lightdm
+            ;;
+        3)
+            pacstrap /mnt lxdm
+            arch-chroot /mnt systemctl enable lxdm
+            ;;
+        4)
+            pacstrap /mnt entrance
+            arch-chroot /mnt systemctl enable entrance
+            ;;
+        *)
+            echo "Invalid choice, defaulting to LightDM"
+            pacstrap /mnt lightdm lightdm-gtk-greeter
+            arch-chroot /mnt systemctl enable lightdm
+            ;;
+    esac
+}
+
 # Function to install desktop environment
 install_desktop_environment() {
     echo "Choose your desktop environment:"
@@ -228,56 +263,48 @@ install_desktop_environment() {
     case $de_choice in
         1)
             pacstrap /mnt plasma kde-applications
-            arch-chroot /mnt systemctl enable sddm
             ;;
         2)
             pacstrap /mnt cinnamon
-            arch-chroot /mnt systemctl enable lightdm
             ;;
         3)
             pacstrap /mnt gnome gnome-extra
-            arch-chroot /mnt systemctl enable gdm
             ;;
         4)
             pacstrap /mnt lxde
-            arch-chroot /mnt systemctl enable lxdm
             ;;
         5)
             pacstrap /mnt lxqt
-            arch-chroot /mnt systemctl enable sddm
             ;;
         6)
             pacstrap /mnt xfce4 xfce4-goodies
-            arch-chroot /mnt systemctl enable lightdm
             ;;
         7)
             pacstrap /mnt mate mate-extra
-            arch-chroot /mnt systemctl enable lightdm
             ;;
         8)
             pacstrap /mnt i3
-            arch-chroot /mnt systemctl enable lightdm
             install_rofi
             ;;
         9)
             pacstrap /mnt awesome
-            arch-chroot /mnt systemctl enable lightdm
             install_rofi
             ;;
         10)
             pacstrap /mnt openbox
-            arch-chroot /mnt systemctl enable lightdm
             install_rofi
             ;;
         11)
             pacstrap /mnt hyprland
-            arch-chroot /mnt systemctl enable sddm
             ;;
         *)
             echo "Invalid choice"
             exit 1
             ;;
     esac
+    
+    # Let user select display manager after DE installation
+    select_display_manager
 }
 
 # Function to install rofi
